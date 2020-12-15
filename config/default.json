@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://kapqo:Konserwa5@cluster0.hgqtx.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    "jwtSecret": "mysecrettoken"
+}
