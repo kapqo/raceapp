@@ -191,7 +191,7 @@ router.put('/vehicle', [auth, [
 
     try {
         const profile = await Profile.findOne({ user: req.user.id });
-        console.log(newVeh);
+        
         profile.vehicle.unshift(newVeh);
 
         await profile.save();
