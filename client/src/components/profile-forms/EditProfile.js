@@ -27,7 +27,7 @@ const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentPr
             facebook: loading || !profile.social ? '' : profile.social.facebook,
             youtube: loading || !profile.social ? '' : profile.social.youtube,
         })
-    }, [loading])
+    }, [loading, getCurrentProfile])
 
     const {
         location,

@@ -9,6 +9,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/profile-forms/CreateProfile';
 import EditProfile from './components/profile-forms/EditProfile';
 import AddVehicle from './components/profile-forms/AddVehicle';
+import Profiles from './components/profiles/Profiles';
 import PrivateRoute from './components/routing/PrivateRoute';
 import './App.css';
 //Redux
@@ -37,6 +38,7 @@ const App = () => {
           <Switch>
             <Route exact path='/register' component={Register}></Route>
             <Route exact path='/login' component={Login}></Route>
+            <Route exact path='/profiles' component={Profiles}></Route>
             <PrivateRoute exact path='/dashboard' component={Dashboard}></PrivateRoute>
             <PrivateRoute exact path='/create-profile' component={CreateProfile}></PrivateRoute>
             <PrivateRoute exact path='/edit-profile' component={EditProfile}></PrivateRoute>

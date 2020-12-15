@@ -10,7 +10,7 @@ import DashboardActions from './DashboardActions'
 const Dashboard = ({ getCurrentProfile, auth: { user }, profile: {profile, loading}, deleteAccount }) => {
     useEffect(() => {
         getCurrentProfile();
-    }, []);
+    }, [getCurrentProfile]);
 
     return loading && profile === null ? <Spinner /> : <Fragment>
         <h1 className="large textcustom">Dashboard</h1>
