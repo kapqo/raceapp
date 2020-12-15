@@ -4,7 +4,9 @@ import { setAlert } from './alert';
 import {
     GET_PROFILE,
     PROFILE_ERROR,
-    UPDATE_PROFILE
+    UPDATE_PROFILE,
+    CLEAR_PROFILE,
+    ACCOUNT_DELETED
 } from './types';
 
 export const getCurrentProfile = () => async dispatch => {
@@ -88,5 +90,43 @@ export const addVehicle = (formData, history) => async dispatch =>{
             type: PROFILE_ERROR,
             payload: { msg: error.response.statusText, status: error.response.status }
         })
+    }
+}
+
+// Delete vehicle
+export const deleteVehicle = id => async dispatch => {
+    try {
+        const res = await axios.delete(`/api/profile/vehicle/${id}`);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+
+        dispatch(setAlert('Vehicle Removed', 'success'));
+    } catch (error) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        })
+    }
+}
+
+// Delete account & profile
+export const deleteAccount = () => async dispatch => {
+    if(window.confirm('Are you sure? This can not be undone! ')) {
+        try {
+            const res = await axios.delete(`/api/profile`);
+    
+            dispatch({ type: CLEAR_PROFILE });
+            dispatch({ type: ACCOUNT_DELETED });
+    
+            dispatch(setAlert('Your account has been permanently'));
+        } catch (error) {
+            dispatch({
+                type: PROFILE_ERROR,
+                payload: { msg: error.response.statusText, status: error.response.status }
+            })
+        }
     }
 }
