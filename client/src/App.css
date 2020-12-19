@@ -7,6 +7,7 @@
   --success-color: #74c69d;
   --custom-color: #74c69d;
   --customlight-color: #D8F3DC;
+  --customdark-color: #081c15;
 }
 
 * {
@@ -173,6 +174,12 @@ img {
 }
 
 .bg-custom {
+  background: var(--custom-color);
+  color: #333;
+  border: #40916c solid 1px;
+}
+
+.bg-customdark {
   background: var(--custom-color);
   color: #333;
   border: #40916c solid 1px;
