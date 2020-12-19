@@ -6,10 +6,10 @@ const ProfileAbout = ({ profile: {
         interests,
         user: {name}
 } }) => 
-        <div class="profile-about bg-light p-2">
+        <div class="profile-about bg-customlight p-2">
             {bio && (
                 <Fragment>
-                    <h2 class="text-primary">{name.trim().split(' ')[0]}s Bio</h2>
+                    <h2 class="textcustomdark">{name.trim().split(' ')[0]}s Bio</h2>
                     <p>
                         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed
                         doloremque nesciunt, repellendus nostrum deleniti recusandae nobis
@@ -18,7 +18,7 @@ const ProfileAbout = ({ profile: {
                 </Fragment>
             )}
           <div class="line"></div>
-          <h2 class="text-primary">Interests Set</h2>
+          <h2 class="textcustomdark">Interests Set</h2>
           <div class="interests">
               {interests.map((interests, index) => (
                   <div key={index} className='p-1'>

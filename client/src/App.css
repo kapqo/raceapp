@@ -5,6 +5,8 @@
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #74c69d;
+  --custom-color: #74c69d;
+  --customlight-color: #D8F3DC;
 }
 
 * {
@@ -162,6 +164,18 @@ img {
   opacity: 0.9;
   background: var(--light-color);
   color: #333;
+}
+
+.bg-customlight {
+  background: var(--customlight-color);
+  color: #333;
+  border: #ccc solid 1px;
+}
+
+.bg-custom {
+  background: var(--custom-color);
+  color: #333;
+  border: #40916c solid 1px;
 }
 
 .btn-primary,
@@ -374,8 +388,7 @@ button {
   grid-template-areas:
     'top top'
     'about about'
-    'exp edu'
-    'github github';
+    'veh veh';
   grid-gap: 1rem;
 }
 
@@ -406,39 +419,39 @@ button {
   text-align: center;
 }
 
-.profile-about .skills {
+.profile-about .interests {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
 
-.profile-exp {
-  grid-area: exp;
+.profile-veh {
+  grid-area: veh;
 }
 
 .profile-edu {
   grid-area: edu;
 }
 
-.profile-exp h2,
+.profile-veh h2,
 .profile-edu h2 {
   margin-bottom: 1rem;
 }
 
-.profile-exp > div,
+.profile-veh > div,
 .profile-edu > div {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: #ccc 1px dotted;
 }
 
-.profile-exp > div:last-child,
+.profile-veh > div:last-child,
 .profile-edu > div:last-child {
   border: 0;
 }
 
-.profile-exp p,
+.profile-veh p,
 .profile-edu p {
   margin: 0.5rem 0;
 }
@@ -498,6 +511,10 @@ button {
 
 .textcustom {
   color: #52b788;
+}
+
+.textcustomdark {
+  color: #1b4332;
 }
 
 /* Mobile Styles */
@@ -564,12 +581,12 @@ button {
     grid-template-areas:
       'top'
       'about'
-      'exp'
+      'veh'
       'edu'
       'github';
   }
 
-  .profile-about .skills {
+  .profile-about .interests {
     flex-direction: column;
   }
 
