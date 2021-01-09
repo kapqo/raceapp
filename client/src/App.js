@@ -8,6 +8,7 @@ import Alert from './components/layout/Alert';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/profile-forms/CreateProfile';
 import EditProfile from './components/profile-forms/EditProfile';
+import EditVehicle from './components/profile-forms/EditVehicle';
 import AddVehicle from './components/profile-forms/AddVehicle';
 import Profiles from './components/profiles/Profiles';
 import Profile from './components/profile/Profile';
@@ -47,6 +48,7 @@ const App = () => {
             <PrivateRoute exact path='/create-profile' component={CreateProfile}></PrivateRoute>
             <PrivateRoute exact path='/edit-profile' component={EditProfile}></PrivateRoute>
             <PrivateRoute exact path='/add-vehicle' component={AddVehicle}></PrivateRoute>
+            <PrivateRoute exact path='/edit-vehicle/:id' component={EditVehicle}></PrivateRoute>
             <PrivateRoute exact path='/posts' component={Posts}></PrivateRoute>
             <PrivateRoute exact path='/posts/:id' component={Post}></PrivateRoute>
           </Switch>

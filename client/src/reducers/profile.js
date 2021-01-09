@@ -1,4 +1,4 @@
-import { GET_PROFILE, PROFILE_ERROR, CLEAR_PROFILE, UPDATE_PROFILE, GET_PROFILES } from "../actions/types";
+import { GET_PROFILE, PROFILE_ERROR, CLEAR_PROFILE, UPDATE_PROFILE, GET_PROFILES, GET_VEHICLE, VEHICLE_ERROR } from "../actions/types";
 
 const initialState = {
     profile: null,
@@ -13,6 +13,7 @@ export default function(state = initialState, action){
     switch(type){
         case GET_PROFILE:
         case UPDATE_PROFILE:
+        case GET_VEHICLE:
             return {
                 ...state,
                 profile: payload,
@@ -30,6 +31,12 @@ export default function(state = initialState, action){
                 error: payload,
                 loading: false,
                 profile: null
+            };
+        case VEHICLE_ERROR:
+            return {
+                ...state,
+                error: payload,
+                loading: false,
             };
         case CLEAR_PROFILE:
             return {

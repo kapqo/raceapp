@@ -7,7 +7,9 @@ import {
     PROFILE_ERROR,
     UPDATE_PROFILE,
     CLEAR_PROFILE,
-    ACCOUNT_DELETED
+    ACCOUNT_DELETED,
+    GET_VEHICLE,
+    VEHICLE_ERROR
 } from './types';
 
 //Get current profile
@@ -59,6 +61,22 @@ export const getProfileById = userId => async dispatch => {
     } catch (error) {
         dispatch({
             type: PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        })
+    }
+}
+//Get vehicle by ID
+export const getVehicleById = vehId => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/vehicle/${vehId}`);
+
+        dispatch({
+            type: GET_VEHICLE,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: VEHICLE_ERROR,
             payload: { msg: error.response.statusText, status: error.response.status }
         })
     }
@@ -118,6 +136,39 @@ export const addVehicle = (formData, history) => async dispatch =>{
         dispatch(setAlert('Vehicle Added', 'success'));
 
         history.push('/dashboard')
+    } catch (error) {
+        const errors = error.response.data.errors;
+    
+        if(errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        })
+    }
+}
+
+// Edit Vehicle
+export const editVehicle = ( vehId, formData, history) => async dispatch =>{
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const res = await axios.put(`/api/profile/vehicle/${vehId}`, formData, config);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+
+        dispatch(setAlert('Vehicle Updated', 'success'));
+
+            history.push('/dashboard')
     } catch (error) {
         const errors = error.response.data.errors;
     

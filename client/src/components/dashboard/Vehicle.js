@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { deleteVehicle } from '../../actions/profile'
 
@@ -13,6 +14,7 @@ const Vehicle = ({ vehicle, deleteVehicle }) => {
             <td className="hide-sm">{veh.hp}</td>
             <td className="hide-sm">{veh.fuel}</td>
             <td>
+                <Link to={`/edit-vehicle/${veh._id}`} class="btn btncustom">Edit</Link>
                 <button onClick={() => deleteVehicle(veh._id)} className="btn btn-danger">Delete</button>
             </td>
         </tr>
@@ -30,7 +32,7 @@ const Vehicle = ({ vehicle, deleteVehicle }) => {
                         <th className="hide-sm">Engine</th>
                         <th className="hide-sm">HP</th>
                         <th className="hide-sm">Fuel</th>
-                        <th />
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>{vehicles}</tbody>
