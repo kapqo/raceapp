@@ -20,16 +20,20 @@ const EditVehicle = ({ profile: { profile, loading }, editVehicle, getVehicleByI
     useEffect(() => {
         getVehicleById(match.params.id);
 
-        console.log();
+        const veh = profile.vehicle.find(veh => veh._id === match.params.id);
+
+        const vehIndex = profile.vehicle.indexOf(veh);
+
+        console.log(vehIndex);
 
         setFormData({
-            brand: loading || !profile.vehicle[match.params.id] ? '' : profile.vehicle[match.params.id].brand,
-            model: loading || !profile.vehicle ? '' : profile.vehicle.model,
-            engine: loading || !profile.vehicle ? '' : profile.vehicle.engine,
-            hp: loading || !profile.vehicle ? '' : profile.vehicle.hp,
-            fuel: loading || !profile.vehicle ? '' : profile.vehicle.fuel,
-            year: loading || !profile.vehicle ? '' : profile.vehicle.year,
-            description: loading || !profile.vehicle ? '' : profile.vehicle.description,
+            brand: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].brand,
+            model: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].model,
+            engine: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].engine,
+            hp: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].hp,
+            fuel: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].fuel,
+            year: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].year,
+            description: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].description,
         })
     }, [loading, getVehicleById, match.params.id])
 
