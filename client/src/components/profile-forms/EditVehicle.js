@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import Spinner from '../layout/Spinner'
 import { connect } from 'react-redux'
 import { getVehicleById, editVehicle } from '../../actions/profile'
-//import { veh._id } from '../dashboard/Vehicle'
 
 const EditVehicle = ({ profile: { profile, loading }, editVehicle, getVehicleById, history, match }) => {
     const [formData, setFormData] = useState({
@@ -23,8 +22,6 @@ const EditVehicle = ({ profile: { profile, loading }, editVehicle, getVehicleByI
         const veh = profile.vehicle.find(veh => veh._id === match.params.id);
 
         const vehIndex = profile.vehicle.indexOf(veh);
-
-        console.log(vehIndex);
 
         setFormData({
             brand: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].brand,
