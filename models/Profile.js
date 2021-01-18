@@ -32,10 +32,13 @@ const ProfileSchema = new mongoose.Schema({
                 type: String
             },
             year: {
-                type: String,
+                type: String
             },
             description: {
-                type: String,
+                type: String
+            },
+            photo: {
+                type: String
             }
         }],
     social: {

@@ -1,11 +1,33 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const auth = require('../../middleware/auth');
 const {check, validationResult} = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'images');
+    },
+    filename: function(req, file, cb) {   
+        cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if(allowedFileTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}
+
+let upload = multer({ storage, fileFilter });
 
 // GET api/profile/me
 // Get current users profile
@@ -56,6 +78,7 @@ router.post(
         fuel,
         year,
         description,
+        photo,
         instagram,
         facebook,
         youtube
@@ -79,6 +102,7 @@ router.post(
     if(fuel) profileFields.vehicle.fuel = fuel;
     if(year) profileFields.vehicle.year = year;
     if(description) profileFields.vehicle.description = description;
+    if(photo) profileFields.vehicle.photo = photo;
 
     //Build social object
     profileFields.social = {};
@@ -183,7 +207,7 @@ router.delete('/', auth, async (req, res) => {
 router.put('/vehicle', [auth, [
     check('brand', 'Brand is required').not().isEmpty(),
     check('model', 'Model is required').not().isEmpty(),
-]], async (req ,res) => {
+]], upload.single('photo'), async (req ,res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -196,7 +220,8 @@ router.put('/vehicle', [auth, [
         hp,
         fuel,
         year,
-        description  
+        description,
+        photo
     } = req.body;
 
     const newVeh = {
@@ -206,7 +231,8 @@ router.put('/vehicle', [auth, [
         hp,
         fuel,
         year,
-        description
+        description,
+        photo
     };
 
     try {
@@ -245,7 +271,7 @@ router.delete('/vehicle/:veh_id', auth, async (req, res) => {
 })
 
 // PUT api/profile/vehicle
-// Add vehicles to profile
+// Edit vehicles to profile
 // Private
 router.put('/vehicle/:veh_id', [auth, [
     check('brand', 'Brand is required').not().isEmpty(),

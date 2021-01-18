@@ -13,11 +13,16 @@ const AddVehicle = ({ addVehicle, history }) => {
         fuel: '',
         year: '',
         description: '',
+        photo: ''
     });
 
-    const { brand, model, engine, hp, fuel, year, description } = formData;
+    const { brand, model, engine, hp, fuel, year, description, photo } = formData;
 
     const onChange = e => setFormData({...formData, [e.target.name]: e.target.value })
+
+    const handlePhoto = e => {
+        setFormData({...formData, photo: e.target.files[0]});
+    }
 
     return (
         <Fragment>
@@ -30,7 +35,7 @@ const AddVehicle = ({ addVehicle, history }) => {
       <form class="form" onSubmit={e => {
           e.preventDefault();
           addVehicle(formData, history);
-      }}>
+      }} encType='multipart/form-data'>
         <div class="form-group">
             <input type="text" placeholder="Brand" name="brand" required value={brand} onChange={e => onChange(e)}/>
         </div>
@@ -57,6 +62,9 @@ const AddVehicle = ({ addVehicle, history }) => {
             placeholder="Vehicle Description"
             value={description} onChange={e => onChange(e)}
           ></textarea>
+        </div>
+        <div>
+            <input type="file" accept=".png, .jpg, .jpeg" name="photo" value={photo} onChange={e => handlePhoto(e)}/>
         </div>
         <input type="submit" class="btn btncustom my-1"/>
         <a class="btn btncustomlight my-1" href="dashboard.html">Go Back</a>

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const ProfileVehicle = ({ 
-    vehicle: { brand, model, engine, hp, fuel, year, description } 
+    vehicle: { brand, model, engine, hp, fuel, year, description, photo } 
 }) =>  <div>
       <h3 className="textcustomdark">{brand} {model}</h3>  
       <p>
