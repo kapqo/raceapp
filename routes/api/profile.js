@@ -1,33 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
 const auth = require('../../middleware/auth');
 const {check, validationResult} = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
-
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, 'images');
-    },
-    filename: function(req, file, cb) {   
-        cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
-
-const fileFilter = (req, file, cb) => {
-    const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    if(allowedFileTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-}
-
-let upload = multer({ storage, fileFilter });
 
 // GET api/profile/me
 // Get current users profile
@@ -207,7 +185,10 @@ router.delete('/', auth, async (req, res) => {
 router.put('/vehicle', [auth, [
     check('brand', 'Brand is required').not().isEmpty(),
     check('model', 'Model is required').not().isEmpty(),
-]], upload.single('photo'), async (req ,res) => {
+]], async (req ,res) => {
+
+    console.log(req.file);
+
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -233,7 +214,7 @@ router.put('/vehicle', [auth, [
         year,
         description,
         photo
-    };
+    }
 
     try {
         const profile = await Profile.findOne({ user: req.user.id });

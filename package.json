@@ -13,13 +13,16 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "config": "^3.3.2",
+    "config": "^3.3.3",
     "express": "^4.17.1",
-    "express-validator": "^6.6.1",
+    "express-validator": "^6.9.2",
+    "firebase": "^8.2.3",
     "gravatar": "^1.8.1",
+    "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.9",
+    "mongoose": "^5.11.12",
     "multer": "^1.4.2",
+    "multer-gridfs-storage": "^4.2.0",
     "request": "^2.88.2"
   },
   "devDependencies": {

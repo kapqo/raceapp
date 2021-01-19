@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addVehicle } from '../../actions/profile'
+import { storage } from '../../firebase/firebase'
 
 const AddVehicle = ({ addVehicle, history }) => {
     const [formData, setFormData] = useState({
@@ -16,12 +17,43 @@ const AddVehicle = ({ addVehicle, history }) => {
         photo: ''
     });
 
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState("");
+
     const { brand, model, engine, hp, fuel, year, description, photo } = formData;
 
     const onChange = e => setFormData({...formData, [e.target.name]: e.target.value })
 
     const handlePhoto = e => {
-        setFormData({...formData, photo: e.target.files[0]});
+        if (e.target.files[0]) {
+            setImage(e.target.files[0])
+        }
+    }
+
+    const handleUpload = (e) => {
+        e.preventDefault();
+        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        uploadTask.on(
+            "state_changed",
+            snapshot => {},
+            error => {
+                console.log(error);
+            },
+            () => {
+                storage
+                    .ref("images")
+                    .child(image.name)
+                    .getDownloadURL()
+                    .then(url => {
+                        setUrl(url);
+                        setFormData({...formData, photo: url })
+                    })
+            }
+        )
+    }
+
+    const cojesgrane = () => {
+        console.log(photo.length)
     }
 
     return (
@@ -35,7 +67,7 @@ const AddVehicle = ({ addVehicle, history }) => {
       <form class="form" onSubmit={e => {
           e.preventDefault();
           addVehicle(formData, history);
-      }} encType='multipart/form-data'>
+      }}>
         <div class="form-group">
             <input type="text" placeholder="Brand" name="brand" required value={brand} onChange={e => onChange(e)}/>
         </div>
@@ -63,10 +95,11 @@ const AddVehicle = ({ addVehicle, history }) => {
             value={description} onChange={e => onChange(e)}
           ></textarea>
         </div>
-        <div>
-            <input type="file" accept=".png, .jpg, .jpeg" name="photo" value={photo} onChange={e => handlePhoto(e)}/>
+        <div class="form-group">
+            <input type="file" accept=".png, .jpg, .jpeg" onChange={handlePhoto}/>
+            <button className="btn" onClick={handleUpload}>Upload</button>
         </div>
-        <input type="submit" class="btn btncustom my-1"/>
+        <button type="submit" class="btn btncustom my-1">Add a vehicle</button>
         <a class="btn btncustomlight my-1" href="dashboard.html">Go Back</a>
       </form>
         </Fragment>
