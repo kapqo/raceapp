@@ -8,6 +8,7 @@
   --custom-color: #74c69d;
   --customlight-color: #D8F3DC;
   --customdark-color: #081c15;
+
 }
 
 * {
@@ -463,22 +464,17 @@ button {
   margin: 0.5rem 0;
 }
 
-.profile-github {
-  grid-area: github;
+.photo-veh {
+  width: 10rem;
+  justify-items: end;
 }
 
-.profile-github .repo {
-  display: flex;
-}
-
-.profile-github .repo > div:first-child {
-  flex: 7;
-  flex-basis: 70%;
-}
-
-.profile-github > div:last-child {
-  flex: 3;
-  flex-basis: 20%;
+.veh-grid {
+  display: grid;
+  grid-template-areas:
+    'veh img';
+  grid-gap: 1rem;
+  justify-content: space-between;
 }
 
 /* Posts Page */
@@ -588,9 +584,7 @@ button {
     grid-template-areas:
       'top'
       'about'
-      'veh'
-      'edu'
-      'github';
+      'veh';
   }
 
   .profile-about .interests {

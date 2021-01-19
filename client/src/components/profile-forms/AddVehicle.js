@@ -52,10 +52,6 @@ const AddVehicle = ({ addVehicle, history }) => {
         )
     }
 
-    const cojesgrane = () => {
-        console.log(photo.length)
-    }
-
     return (
         <Fragment>
             <h1 class="large textcustom">

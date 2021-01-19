@@ -8,6 +8,7 @@ import ProfileAbout from './ProfileAbout'
 import ProfileVehicle from './ProfileVehicle.js'
 import { getProfileById } from '../../actions/profile'
 
+
 const Profile = ({ getProfileById, profile: { profile, loading }, auth, match }) => {
     useEffect(() => {
         getProfileById(match.params.id);

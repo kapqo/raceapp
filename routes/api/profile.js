@@ -270,7 +270,8 @@ router.put('/vehicle/:veh_id', [auth, [
         hp,
         fuel,
         year,
-        description  
+        description,
+        photo
     } = req.body;
 
     const newVeh = {
@@ -283,6 +284,7 @@ router.put('/vehicle/:veh_id', [auth, [
     if (fuel) newVeh.fuel = fuel;
     if (year) newVeh.year = year;
     if (description) newVeh.description = description;
+    if (photo) newVeh.photo = photo;
 
     try {
         const profile = await Profile.findOneAndUpdate(

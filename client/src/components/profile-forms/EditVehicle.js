@@ -14,6 +14,7 @@ const EditVehicle = ({ profile: { profile, loading }, editVehicle, getVehicleByI
         fuel: '',
         year: '',
         description: '',
+        photo: ''
     });
 
     useEffect(() => {
@@ -31,10 +32,11 @@ const EditVehicle = ({ profile: { profile, loading }, editVehicle, getVehicleByI
             fuel: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].fuel,
             year: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].year,
             description: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].description,
+            photo: loading || !profile.vehicle[vehIndex] ? '' : profile.vehicle[vehIndex].photo,
         })
     }, [loading, getVehicleById, match.params.id])
 
-    const { brand, model, engine, hp, fuel, year, description } = formData;
+    const { brand, model, engine, hp, fuel, year, description, photo } = formData;
 
     const onChange = e => setFormData({...formData, [e.target.name]: e.target.value })
 
@@ -77,6 +79,9 @@ const EditVehicle = ({ profile: { profile, loading }, editVehicle, getVehicleByI
             placeholder="Vehicle Description"
             value={description} onChange={e => onChange(e)}
           ></textarea>
+        </div>
+        <div class="form-group">
+            <input type="text" disabled="true" placeholder="Photo" name="photo" value={photo} onChange={e => onChange(e)}/>
         </div>
         <input type="submit" class="btn btncustom my-1"/>
         <a class="btn btncustomlight my-1" href="dashboard.html">Go Back</a>

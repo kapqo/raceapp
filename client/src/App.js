@@ -16,6 +16,7 @@ import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import PrivateRoute from './components/routing/PrivateRoute';
 import './App.css';
+import 'semantic-ui-css/semantic.min.css'
 //Redux
 import {Provider} from 'react-redux';
 import store from './store';
