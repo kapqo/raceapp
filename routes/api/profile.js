@@ -71,17 +71,6 @@ router.post(
         profileFields.interests = interests.split(',').map(interests => interests.trim());
     }
 
-    //Build vehicle object
-    // profileFields.vehicle = {};
-    // if(brand) profileFields.vehicle.brand = brand;
-    // if(model) profileFields.vehicle.model = model;
-    // if(engine) profileFields.vehicle.engine = engine;
-    // if(hp) profileFields.vehicle.hp = hp;
-    // if(fuel) profileFields.vehicle.fuel = fuel;
-    // if(year) profileFields.vehicle.year = year;
-    // if(description) profileFields.vehicle.description = description;
-    // if(photo) profileFields.vehicle.photo = photo;
-
     //Build social object
     profileFields.social = {};
     if(instagram) profileFields.social.instagram = instagram;
