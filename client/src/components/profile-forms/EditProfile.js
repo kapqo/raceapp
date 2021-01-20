@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createProfile, getCurrentProfile } from '../../actions/profile'
 
-const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentProfile, history }) => {
+const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentProfile, history, match }) => {
     const [formData, setFormData] = useState({
         location: '',
         bio: '',
@@ -12,12 +12,22 @@ const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentPr
         instagram: '',
         facebook: '',
         youtube: '',
+        brand: '',
+        model: '',
+        engine: '',
+        hp: '',
+        fuel: '',
+        year: '',
+        description: '',
+        photo: ''
     });
 
     const [displaySocialInputs, toggleSocialInputs] = useState(false);
 
     useEffect(() => {
         getCurrentProfile();
+
+        console.log(profile.vehicle);
 
         setFormData({
             location: loading || !profile.location ? '' : profile.location,
@@ -26,6 +36,14 @@ const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentPr
             instagram: loading || !profile.social ? '' : profile.social.instagram,
             facebook: loading || !profile.social ? '' : profile.social.facebook,
             youtube: loading || !profile.social ? '' : profile.social.youtube,
+            brand: loading || !profile.vehicle ? '' : profile.vehicle.brand,
+            model: loading || !profile.vehicle ? '' : profile.vehicle.model,
+            engine: loading || !profile.vehicle ? '' : profile.vehicle.engine,
+            hp: loading || !profile.vehicle ? '' : profile.vehicle.hp,
+            fuel: loading || !profile.vehicle ? '' : profile.vehicle.fuel,
+            year: loading || !profile.vehicle ? '' : profile.vehicle.year,
+            description: loading || !profile.vehicle ? '' : profile.vehicle.description,
+            photo: loading || !profile.vehicle ? '' : profile.vehicle.photo,
         })
     }, [loading, getCurrentProfile])
 
@@ -35,7 +53,15 @@ const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentPr
         interests,
         instagram,
         facebook,
-        youtube
+        youtube,
+        brand,
+        model,
+        engine,
+        hp,
+        fuel,
+        year,
+        description,
+        photo
     } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -98,7 +124,6 @@ const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentPr
           <input type="text" placeholder="YouTube URL" name="youtube" value={youtube} onChange={e => onChange(e)}/>
         </div>
             </Fragment>}
-
         
         <input type="submit" className="btn btncustom my-1" />
         <Link className="btn btncustomlight my-1" to="/dashboard">Go Back</Link>
