@@ -11,15 +11,17 @@ const Posts = ({ getPosts, post: {posts, loading} }) => {
         getPosts();
     }, [getPosts]);
 
+    const result = posts.filter(post => post.type === '');
+
     return loading ? <Spinner /> : (
         <Fragment>
             <h1 className="large textcustom">Posts</h1>
             <p className="lead">
                 <i className="fas fa-user"></i> Welcome to the community
             </p>
-            <PostForm />
+            <PostForm id=''/>
             <div className="posts">
-                {posts.map(post =>(
+                {result.map(post =>(
                     <PostItem key={post._id} post={post} />
                 ))}
             </div>

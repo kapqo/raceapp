@@ -28,7 +28,7 @@ const Profile = ({ getProfileById, profile: { profile, loading }, auth, match })
                         <h2 className="textcustom">Vehicle</h2>
                         {profile.vehicle.length > 0 ? (<Fragment>
                             {profile.vehicle.map(vehicle => (
-                                <ProfileVehicle key={vehicle._id} vehicle={vehicle}></ProfileVehicle>
+                                <ProfileVehicle key={vehicle._id} vehicle={vehicle} profileId={profile?.user?._id} authId={auth.user._id}></ProfileVehicle>
                             ))}
                         </Fragment>) : (<h4>No vehicle added</h4>) }
                     </div>

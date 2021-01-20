@@ -1,14 +1,23 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Button, Icon, Image, Modal, Grid, Header, Label } from 'semantic-ui-react'
+import { Button, Icon, Image, Modal, Grid, Header, Label, Segment, Placeholder } from 'semantic-ui-react'
+import PostItem from '../posts/PostItem'
+import PostForm from '../posts/PostForm'
+import { getPosts } from '../../actions/post'
 
 const ProfileVehicle = ({ 
-    vehicle: { _id ,brand, model, engine, hp, fuel, year, description, photo }, profile: {profile},
-}) =>  
-    {
-        const [open, setOpen] = useState(false)
-        return(
+    vehicle: { _id ,brand, model, engine, hp, fuel, year, description, photo }, getPosts, post: {posts}, profileId, authId
+}) => {
+    useEffect(() => {
+      getPosts();
+    }, [getPosts]);
+
+    //Show only posts of this vehicle
+    const result = posts.filter(post => post.type === _id);
+
+    const [open, setOpen] = useState(false)
+    return(
     <div className="veh-grid">
     <div>
       <h3 className="textcustomdark">{brand} {model}</h3>  
@@ -34,10 +43,18 @@ const ProfileVehicle = ({
                 <Modal.Header>Specs and disscusion</Modal.Header>
                 <Modal.Content>
                   <Modal.Description>
-                    <Grid columns='three' divided>
+                    <Grid columns='equal' divided>
                       <Grid.Row stretched>
                         <Grid.Column>
-                          <Image size='medium' src={photo} wrapped />
+                          {photo !== '' ?
+                         <Image size='medium' src={photo} wrapped /> : <Segment placeholder>
+                          <Header icon>
+                            <Icon name='image outline' />
+                            No images uploaded for this vehicle.
+                          </Header>
+                          { profileId === authId ?
+                          <Button primary>Add Photo</Button> : null}
+                        </Segment>}
                         </Grid.Column>
                         <Grid.Column>
                           <Header as='h1'>Brand: {brand}</Header>
@@ -51,8 +68,19 @@ const ProfileVehicle = ({
                         </Grid.Column>
                       </Grid.Row>
                       <Grid.Row>
-                      <Label><Header as='h2'>Description: </Header>
-                      <p>{description}</p></Label>
+                        <Grid.Column>
+                      <Segment>
+                        <Header as='h2'>Description: </Header>
+                      <p>{description}</p>
+                      { profileId === authId ?
+                      <PostForm id={_id}/> : null}
+                      <div className="posts">
+                        {result.map(post =>(
+                          <PostItem key={post._id} post={post} />
+                        ))}
+                      </div>
+                      </Segment>
+                      </Grid.Column>
                       </Grid.Row>
                     </Grid>
                   </Modal.Description>
@@ -74,11 +102,14 @@ const ProfileVehicle = ({
 
 ProfileVehicle.propTypes = {
     vehicle: PropTypes.array.isRequired,
-    profile: PropTypes.object.isRequired,
+    getPosts: PropTypes.func.isRequired,
+    post: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    profile: state.profile
+  post: state.post,
+  auth: state.auth
 })
 
-export default connect(mapStateToProps, {})(ProfileVehicle)
+export default connect(mapStateToProps, {getPosts})(ProfileVehicle)

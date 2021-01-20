@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addVehicle } from '../../actions/profile'
 import { storage } from '../../firebase/firebase'
+import { Button, Progress } from 'semantic-ui-react'
 
 const AddVehicle = ({ addVehicle, history }) => {
     const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const AddVehicle = ({ addVehicle, history }) => {
 
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState("");
+    const [progress, setProgress] = useState(0);
 
     const { brand, model, engine, hp, fuel, year, description, photo } = formData;
 
@@ -35,7 +37,12 @@ const AddVehicle = ({ addVehicle, history }) => {
         const uploadTask = storage.ref(`images/${image.name}`).put(image);
         uploadTask.on(
             "state_changed",
-            snapshot => {},
+            snapshot => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                setProgress(progress);
+            },
             error => {
                 console.log(error);
             },
@@ -94,6 +101,7 @@ const AddVehicle = ({ addVehicle, history }) => {
         <div class="form-group">
             <input type="file" accept=".png, .jpg, .jpeg" onChange={handlePhoto}/>
             <button className="btn" onClick={handleUpload}>Upload</button>
+            <Progress percent={progress} active autoSuccess></Progress>
         </div>
         <button type="submit" class="btn btncustom my-1">Add a vehicle</button>
         <a class="btn btncustomlight my-1" href="dashboard.html">Go Back</a>

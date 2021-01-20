@@ -11,9 +11,7 @@ const ProfileAbout = ({ profile: {
                 <Fragment>
                     <h2 class="textcustomdark">{name.trim().split(' ')[0]}s Bio</h2>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed
-                        doloremque nesciunt, repellendus nostrum deleniti recusandae nobis
-                        neque modi perspiciatis similique?
+                        {bio}
                     </p>
                 </Fragment>
             )}

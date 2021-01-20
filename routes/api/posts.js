@@ -25,7 +25,8 @@ router.post('/', [ auth, [
             text: req.body.text,
             name: user.name,
             avatar: user.avatar,
-            user: req.user.id
+            user: req.user.id,
+            type: req.body.type
         });
 
         const post = await newPost.save();

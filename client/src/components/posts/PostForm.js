@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addPost } from '../../actions/post'
 
-const PostForm = ({ addPost }) => {
+const PostForm = ({ addPost, id}) => {
 const [text, setText] = useState('');
+
 
     return (
         <div class="post-form">
@@ -13,7 +14,7 @@ const [text, setText] = useState('');
         </div>
         <form class="form my-1" onSubmit={e => {
             e.preventDefault();
-            addPost({ text });
+            addPost({ text, type: id });
             setText('');
         }}>
           <textarea
