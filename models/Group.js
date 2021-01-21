@@ -18,6 +18,9 @@ const GroupSchema = new mongoose.Schema({
     }],
     status: {
         type: String
+    },
+    admin: {
+        type: String
     }
 });
 

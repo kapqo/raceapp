@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 import { getCurrentProfile } from '../../actions/profile'
 
-const Navbar = ({ auth: { isAuthenticated, loading, user }, logout, getCurrentProfile }) => {
+const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
 
 const authLinks = (
   <ul>
@@ -15,6 +15,9 @@ const authLinks = (
         <li><Link to='/posts'>
           Posts</Link>
         </li>
+        <li><Link to='/groups'>
+          Groups</Link>
+        </li>
         <li><Link to='/dashboard'>
           <span className="hide-sm">Dashboard</span></Link>
         </li>
@@ -23,7 +26,7 @@ const authLinks = (
           <span className="hide-sm">Log out</span></a>
           </li>
           <li>
-            <Link to={`/profile/${user._id}`} className="hide-sm"><i className="fas fa-user"></i>{' '}View Profile</Link>
+            {user !== null ? <Link to={`/profile/${user._id}`} className="hide-sm"><i className="fas fa-user"></i>{' '}View Profile</Link> : null}
           </li>
       </ul>
 );

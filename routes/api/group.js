@@ -4,9 +4,8 @@ const auth = require('../../middleware/auth');
 const {check, validationResult} = require('express-validator')
 
 const Group = require('../../models/Group');
-const User = require('../../models/User');
 
-// POST api/group
+// group api/group
 // Create or update a group
 // Private
 router.post('/', [
@@ -23,7 +22,7 @@ async (req, res) =>{
             return res.status(400).json({ errors: errors.array() })
     }
 
-    const { name, avatar, description, id, status} = req.body;
+    const { name, avatar, description, id, status, admin} = req.body;
 
     //Build group object
     const groupFields = {};
@@ -32,6 +31,7 @@ async (req, res) =>{
     if(avatar) groupFields.avatar = avatar;
     if(description) groupFields.description = description;
     if(status) groupFields.status = status;
+    if(admin) groupFields.admin = admin;
 
     try {
         let group = await Group.findOne({user: req.user.id})
@@ -69,7 +69,7 @@ router.get(
     }
 )
 
-// GET api/group/group_id
+// GET api/group/:group_id
 // Get group by group ID
 // Public
 router.get('/:group_id', async (req, res) => {
@@ -84,6 +84,20 @@ router.get('/:group_id', async (req, res) => {
         if(error.kind == 'ObjectId'){
             return res.status(400).json({ msg: 'Group not found'});
         }
+        res.status(500).send('Server Error');
+    }
+});
+
+// DELETE api/group/:group_id
+// Delete group by group ID
+// Private
+router.delete('/:group_id', auth, async (req, res) => {
+    try {
+        await Group.findOneAndRemove({ _id: req.params.group_id });
+
+        res.json({msg: 'Group removed'});
+    } catch (error) {
+        console.error(error.message);
         res.status(500).send('Server Error');
     }
 });
