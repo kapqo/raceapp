@@ -4,7 +4,8 @@ import {
     ADD_GROUP,
     DELETE_GROUP,
     GROUP_ERROR,
-    CLEAR_GROUP
+    CLEAR_GROUP,
+    UPDATE_MEMBERS
 } from '../actions/types';
 
 const initialState = {
@@ -53,6 +54,12 @@ export default function(state = initialState, action) {
                 return {
                     ...state,
                     group: null,
+                    loading: false
+                }
+            case UPDATE_MEMBERS:
+                return {
+                    ...state,
+                    groups: state.groups.map(group => group._id === payload.id ? { ...group, members: payload.members } : group),
                     loading: false
                 }
         default:

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { getCurrentProfile } from '../../actions/profile'
 import { addGroup } from '../../actions/group'
 import { storage } from '../../firebase/firebase'
-import { Button, Progress, Form, Dropdown, Grid } from 'semantic-ui-react'
+import { Button, Progress, Form, Checkbox, Grid, Label, Icon } from 'semantic-ui-react'
 
 const AddGroup = ({ addGroup, history, getCurrentProfile, profile: {profile} }) => {
     useEffect(() => {
@@ -17,7 +17,7 @@ const AddGroup = ({ addGroup, history, getCurrentProfile, profile: {profile} }) 
         avatar: '',
         description: '',
         user: '',
-        status: '',
+        status: false,
         admin: ''
     });
 
@@ -65,14 +65,6 @@ const AddGroup = ({ addGroup, history, getCurrentProfile, profile: {profile} }) 
         )
     }
 
-
-
-    //niedziała
-    const options = [
-        { key: 1, text: 'Public', value: {status} },
-        { key: 2, text: 'Private', value: {status} }
-      ]
-
     return <Fragment>
         <Form onSubmit={e => {
             e.preventDefault();
@@ -93,8 +85,9 @@ const AddGroup = ({ addGroup, history, getCurrentProfile, profile: {profile} }) 
                 ></textarea>
             </Form.Field>
             <Form.Field>
-                {/* nie działa */}
-                <Dropdown text='Choose group type' simple item options={options} value={status} onClick={e => onChange(e)}/>
+                <Label><Checkbox toggle value={status} name='status' onChange={e => {
+                    setFormData({...formData, status: !status})
+                }} /><Icon circular name="key" color='blue'></Icon>Private</Label>
             </Form.Field>    
             <Form.Field>
                 <label>Group's avatar<small>(optional)</small></label>

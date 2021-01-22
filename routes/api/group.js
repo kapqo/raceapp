@@ -105,30 +105,20 @@ router.delete('/:group_id', auth, async (req, res) => {
 // PUT api/group/members
 // Add vehicles to profile
 // Private
-router.put('/members', auth, async (req ,res) => {
-
-
-    const errors = validationResult(req);
-    if(!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-    const {
-        id
-    } = req.body;
-
-    const newMem = {
-        id
-    }
-
+router.put('/members/:id', auth, async (req ,res) => {
     try {
-        const group = await Group.findOne({user: req.user.id})
+        const group = await Group.findById(req.params.id);
+
+        //Check if the post has alredy been liked
+        if(group.members.filter(members => members.user.toString() === req.user.id).length > 0) {
+            return res.status(400).json({ msg: 'You are alredy in this gorup' });
+        }
         
-        group.members.unshift(newMem);
+        group.members.unshift({user: req.user.id});
 
         await group.save();
 
-        res.json(group);
+        res.json(group.members);
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error')

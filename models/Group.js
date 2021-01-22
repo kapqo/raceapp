@@ -19,7 +19,8 @@ const GroupSchema = new mongoose.Schema({
         }
     }],
     status: {
-        type: String
+        type: Boolean,
+        default: false
     },
     admin: {
         type: String

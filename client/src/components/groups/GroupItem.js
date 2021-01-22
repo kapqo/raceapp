@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import PostItem from '../posts/PostItem'
 import PostForm from '../posts/PostForm'
-import { getPosts } from '../../actions/post'
+import { addLike, getPosts } from '../../actions/post'
 import { getProfileById } from '../../actions/profile'
 import { Card, Label, Image, Icon, Segment, Header, Modal, Button, Grid } from 'semantic-ui-react'
-import { deleteGroup } from '../../actions/group'
+import { deleteGroup, addMember } from '../../actions/group'
 
-const GroupItem = ({ deleteGroup, getProfileById, profile: {profile}, group: { _id, name, avatar, status, description, members, admin, groups }, post: {posts}, getPosts }) => {
+const GroupItem = ({ addMember, deleteGroup, getProfileById, profile: {profile}, group: { _id, name, avatar, status, description, members, admin, groups }, post: {posts}, getPosts }) => {
     useEffect(() => {
         getProfileById(admin);
     }, [getProfileById, admin])
@@ -35,7 +35,7 @@ const GroupItem = ({ deleteGroup, getProfileById, profile: {profile}, group: { _
                     }
                     <Card.Content>
                     <Card.Header>{name}</Card.Header>
-                    <Card.Meta>{status}</Card.Meta>
+                    <Card.Meta>{status === true ? 'Private' : 'Public'}</Card.Meta>
                     <Card.Description>{description}</Card.Description>
                     </Card.Content>
                     <Card.Content extra>
@@ -65,20 +65,28 @@ const GroupItem = ({ deleteGroup, getProfileById, profile: {profile}, group: { _
                                         </Segment>}
                                         </Grid.Column>
                                         <Grid.Column>
-                                            <Segment>
-                                                <Label>Description:</Label>
-                                                {' ' + description}<br/>
-                                                <Label color={'green'}>Admin:</Label>
+
+                                            <Segment vertical>
+                                            <Label color={'green'}>Admin:</Label>
                                                 <Label as='a' image>
                                                 <img src={profile.user.avatar} />
                                                     {' ' + profile.user.name}
-                                                </Label><br/>
-                                                ile: {members.length}
+                                                </Label>
+                                            </Segment>
+                                            <Segment vertical>
+                                                <Label>Description:</Label>
+                                                {' ' + description}<br/>
+                                            </Segment>
+                                            <Segment vertical>
+                                                <Button onClick={e => addMember(_id)} type='button' color='olive' >Join in</Button>
                                             </Segment>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row stretched>
                                         <Grid.Column>
+                                            {status === true ? 
+                                            <Segment><Header>Group is private. Join us to see more!</Header></Segment>
+                                            :
                                             <Segment>
                                                 <PostForm id={_id}/>
                                                 <div className="posts">
@@ -86,7 +94,7 @@ const GroupItem = ({ deleteGroup, getProfileById, profile: {profile}, group: { _
                                                     <PostItem key={post._id} post={post} />
                                                 ))}
                                                 </div>
-                                            </Segment>
+                                            </Segment>}
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
@@ -110,6 +118,7 @@ GroupItem.propTypes = {
     getProfileById: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
     deleteGroup: PropTypes.func.isRequired,
+    addMember: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -117,4 +126,4 @@ const mapStateToProps = state => ({
     profile: state.profile,
   })
 
-export default connect(mapStateToProps, {getPosts, getProfileById, deleteGroup})(GroupItem)
+export default connect(mapStateToProps, {addMember, getPosts, getProfileById, deleteGroup})(GroupItem)

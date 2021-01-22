@@ -6,7 +6,8 @@ import {
     ADD_GROUP,
     DELETE_GROUP,
     GROUP_ERROR,
-    CLEAR_GROUP
+    CLEAR_GROUP,
+    UPDATE_MEMBERS
 } from './types';
 
 //Get groups
@@ -90,27 +91,20 @@ export const addGroup = formData => async dispatch => {
     }
 }
 
-// Add group member
-// export const addMember = formData => async dispatch => {
-//     const config = {
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     }
+//Add group member
+export const addMember = id => async dispatch => {
 
-//     try {
-//         const res = await axios.post('/api/group/members', formData, config);
+    try {
+        const res = await axios.put(`/api/group/members/${id}`);
 
-//         dispatch({
-//             type: ADD_GROUP,
-//             payload: res.data
-//         })
-
-//         dispatch(setAlert('Group member added', 'success'))
-//     } catch (error) {
-//         dispatch({
-//             type: GROUP_ERROR,
-//             payload: { msg: error.response.statusText, status: error.response.status }
-//         })
-//     }
-// }
+        dispatch({
+            type: UPDATE_MEMBERS,
+            payload: {id, members: res.data}
+        })
+    } catch (error) {
+        dispatch({
+            type: GROUP_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        })
+    }
+}
