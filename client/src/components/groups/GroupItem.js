@@ -1,38 +1,120 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Card, Container, Image, Icon, Segment, Header } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import PostItem from '../posts/PostItem'
+import PostForm from '../posts/PostForm'
+import { getPosts } from '../../actions/post'
+import { getProfileById } from '../../actions/profile'
+import { Card, Label, Image, Icon, Segment, Header, Modal, Button, Grid } from 'semantic-ui-react'
+import { deleteGroup } from '../../actions/group'
 
-const GroupItem = ({ group: { _id, name, avatar, status, description } }) => {
+const GroupItem = ({ deleteGroup, getProfileById, profile: {profile}, group: { _id, name, avatar, status, description, members, admin, groups }, post: {posts}, getPosts }) => {
+    useEffect(() => {
+        getProfileById(admin);
+    }, [getProfileById, admin])
+    
+    useEffect(() => {
+        getPosts();
+      }, [getPosts]);
 
-    let sIcon = '';
-    if(status === 'private') {sIcon = 'key'} else sIcon = 'globe'
+    //Show only posts of this group
+    const result = posts.filter(post => post.type === _id);
 
+    const [open, setOpen] = React.useState(false)
 
     return <Fragment>
                 <Card>
-                    {/* przetestować czy to działa */}
                     {avatar !== '' ?
-                        <Image src={avatar} wrapped ui={false} /> :  <Segment placeholder>
+                        <Image src={avatar} wrapped ui={false} /> :  <Segment>
                             <Header icon>
                             <Icon name='image outline' />
-                            No images uploaded for this vehicle.
+                            No avatar added
                           </Header>
                         </Segment>
                     }
                     <Card.Content>
                     <Card.Header>{name}</Card.Header>
-                    <Card.Meta><Icon name='key' circular /></Card.Meta>
+                    <Card.Meta>{status}</Card.Meta>
                     <Card.Description>{description}</Card.Description>
-                    {/* zrobić liczbę użytkowników w grupie */}
-                    {/* przycisk otwierający modal z grupą, tło się zaciemnia */}
                     </Card.Content>
+                    <Card.Content extra>
+                        <a>
+                            <Icon name='user' />
+                            {members.length} Members
+                        </a>
+                    </Card.Content>
+                    <Modal
+                        onClose={() => setOpen(false)}
+                        onOpen={() => setOpen(true)}
+                        open={open}
+                        trigger={<Button>Show more</Button>}
+                        >
+                        <Modal.Header>{name}</Modal.Header>
+                        <Modal.Content image>
+                            <Modal.Description>
+                                <Grid columns='equal' divided container>
+                                    <Grid.Row stretched>
+                                        <Grid.Column width={4}>
+                                        {avatar !== '' ?
+                                            <Image size='medium' src={avatar} wrapped /> : <Segment placeholder>
+                                            <Header icon>
+                                                <Icon name='image outline' />
+                                                No images uploaded for this vehicle.
+                                            </Header>
+                                        </Segment>}
+                                        </Grid.Column>
+                                        <Grid.Column>
+                                            <Segment>
+                                                <Label>Description:</Label>
+                                                {' ' + description}<br/>
+                                                <Label color={'green'}>Admin:</Label>
+                                                <Label as='a' image>
+                                                <img src={profile.user.avatar} />
+                                                    {' ' + profile.user.name}
+                                                </Label><br/>
+                                                ile: {members.length}
+                                            </Segment>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row stretched>
+                                        <Grid.Column>
+                                            <Segment>
+                                                <PostForm id={_id}/>
+                                                <div className="posts">
+                                                    {result.map(post =>(
+                                                    <PostItem key={post._id} post={post} />
+                                                ))}
+                                                </div>
+                                            </Segment>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Modal.Description>
+                        </Modal.Content>
+                        <Modal.Actions>
+                        <button onClick={() => deleteGroup(_id)} className="btn btn-danger">Delete</button>
+                            <Button primary onClick={() => setOpen(false)}>
+                                Close <Icon name='right chevron' />
+                            </Button>
+                        </Modal.Actions>
+                        </Modal>
                 </Card>
         </Fragment>
 }
 
 GroupItem.propTypes = {
     group: PropTypes.object.isRequired,
+    getPosts: PropTypes.func.isRequired,
+    post: PropTypes.object.isRequired,
+    getProfileById: PropTypes.func.isRequired,
+    profile: PropTypes.object.isRequired,
+    deleteGroup: PropTypes.func.isRequired,
 }
 
-export default GroupItem
+const mapStateToProps = state => ({
+    post: state.post,
+    profile: state.profile,
+  })
+
+export default connect(mapStateToProps, {getPosts, getProfileById, deleteGroup})(GroupItem)

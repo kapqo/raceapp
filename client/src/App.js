@@ -13,6 +13,7 @@ import AddVehicle from './components/profile-forms/AddVehicle';
 import Profiles from './components/profiles/Profiles';
 import Profile from './components/profile/Profile';
 import Groups from './components/groups/Group';
+import AddGroup from './components/groups/AddGroup';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import PrivateRoute from './components/routing/PrivateRoute';
@@ -54,6 +55,7 @@ const App = () => {
             <PrivateRoute exact path='/posts' component={Posts}></PrivateRoute>
             <PrivateRoute exact path='/posts/:id' component={Post}></PrivateRoute>
             <PrivateRoute exact path='/groups' component={Groups}></PrivateRoute>
+            <PrivateRoute exact path='/add-group' component={AddGroup}></PrivateRoute>
           </Switch>
         </section>
       </Fragment>

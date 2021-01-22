@@ -22,13 +22,13 @@ async (req, res) =>{
             return res.status(400).json({ errors: errors.array() })
     }
 
-    const { name, avatar, description, id, status, admin} = req.body;
+    const { name, avatar, description, user, status, admin} = req.body;
 
     //Build group object
     const groupFields = {};
 
     if(name) groupFields.name = name;
-    if(avatar) groupFields.avatar = avatar;
+    groupFields.avatar = avatar;
     if(description) groupFields.description = description;
     if(status) groupFields.status = status;
     if(admin) groupFields.admin = admin;
@@ -101,5 +101,39 @@ router.delete('/:group_id', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+// PUT api/group/members
+// Add vehicles to profile
+// Private
+router.put('/members', auth, async (req ,res) => {
+
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+        id
+    } = req.body;
+
+    const newMem = {
+        id
+    }
+
+    try {
+        const group = await Group.findOne({user: req.user.id})
+        
+        group.members.unshift(newMem);
+
+        await group.save();
+
+        res.json(group);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error')
+    }
+})
+
 
 module.exports = router;

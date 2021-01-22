@@ -176,7 +176,6 @@ router.put('/vehicle', [auth, [
     check('model', 'Model is required').not().isEmpty(),
 ]], async (req ,res) => {
 
-    console.log(req.file);
 
     const errors = validationResult(req);
     if(!errors.isEmpty()) {

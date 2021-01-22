@@ -3,7 +3,8 @@ import {
     GET_GROUPS,
     ADD_GROUP,
     DELETE_GROUP,
-    GROUP_ERROR
+    GROUP_ERROR,
+    CLEAR_GROUP
 } from '../actions/types';
 
 const initialState = {
@@ -45,6 +46,13 @@ export default function(state = initialState, action) {
                 return {
                     ...state,
                     error: payload,
+                    loading: false,
+                    group: null
+                }
+            case CLEAR_GROUP:
+                return {
+                    ...state,
+                    group: null,
                     loading: false
                 }
         default:

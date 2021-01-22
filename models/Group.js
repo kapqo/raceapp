@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const GroupSchema = new mongoose.Schema({
     name: {
@@ -12,8 +13,9 @@ const GroupSchema = new mongoose.Schema({
         type: String
     },
     members: [{
-        id: {
-            type: String
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'users'
         }
     }],
     status: {
