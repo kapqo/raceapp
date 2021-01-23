@@ -13,9 +13,6 @@ const Group = ({ getGroups, group: { groups, loading }  }) => {
         getGroups();
     }, [getGroups]);
 
-
-    console.log(groups)
-
     return <Fragment>
                 { loading ? <Spinner /> : <Fragment>
                 <Container text>

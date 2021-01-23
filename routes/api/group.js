@@ -103,7 +103,7 @@ router.delete('/:group_id', auth, async (req, res) => {
 });
 
 // PUT api/group/members
-// Add vehicles to profile
+// Add members to group
 // Private
 router.put('/members/:id', auth, async (req ,res) => {
     try {
@@ -124,6 +124,56 @@ router.put('/members/:id', auth, async (req ,res) => {
         res.status(500).send('Server Error')
     }
 })
+
+// group api/group
+// Create or update a group
+// Private
+router.put('/:group_id', [
+    auth,
+    [
+    check('name', 'Name is required')
+    .not()
+    .isEmpty()
+    ]
+],
+async (req, res) =>{
+    const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { name, avatar, description, members, status, admin} = req.body;
+
+    //Build group object
+    const groupFields = {};
+
+    if(name) groupFields.name = name;
+    groupFields.avatar = avatar;
+    if(description) groupFields.description = description;
+    if(status) groupFields.status = status;
+    if(admin) groupFields.admin = admin;
+
+    try {
+        let group = await Group.findOne({ _id: req.params.group_id })
+
+            if (group){
+                group = await Group.findOneAndUpdate({ _id: req.params.group_id }, { $set: groupFields }, { new: true })
+                res.json(group)
+            }
+            // const group = await Group.findOneAndUpdate(
+            //     { user: req.user.id, 'group._id': req.params.group_id },
+            //     { $set: { 'group.$': {_id: req.params.group_id, ...groupFields} }},
+            //     { new: true });
+        
+        
+        await group.save();
+        res.json(group);
+        }  catch (error) {
+            console.error(error.message);
+            res.status(500).send('Server Error');
+        }
+});
+
 
 
 module.exports = router;

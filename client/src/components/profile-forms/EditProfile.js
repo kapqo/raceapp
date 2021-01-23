@@ -27,8 +27,6 @@ const EditProfile = ({ profile: { profile, loading },createProfile, getCurrentPr
     useEffect(() => {
         getCurrentProfile();
 
-        console.log(profile.vehicle);
-
         setFormData({
             location: loading || !profile.location ? '' : profile.location,
             bio: loading || !profile.bio ? '' : profile.bio,

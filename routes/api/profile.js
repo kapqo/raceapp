@@ -276,11 +276,10 @@ router.put('/vehicle/:veh_id', [auth, [
 
     try {
         const profile = await Profile.findOneAndUpdate(
-          // note that I wrote 'userid' instead of 'user'
+          
           { user: req.user.id, 'vehicle._id': req.params.veh_id },
           {
             $set: {
-              // I don't want my experience id to change
               'vehicle.$': { _id: req.params.veh_id, ...newVeh }
             }
           },

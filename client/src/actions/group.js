@@ -108,3 +108,36 @@ export const addMember = id => async dispatch => {
         })
     }
 }
+
+// Edit Group
+export const editGroup = ( groupId, formData, history) => async dispatch =>{
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const res = await axios.put(`/api/group/${groupId}`, formData, config);
+
+        dispatch({
+            type: GET_GROUPS,
+            payload: res.data
+        });
+
+        dispatch(setAlert('Group Updated', 'success'));
+
+            history.push('/groups')
+    } catch (error) {
+        const errors = error.response.data.errors;
+    
+        if(errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+
+        dispatch({
+            type: GROUP_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        })
+    }
+}
