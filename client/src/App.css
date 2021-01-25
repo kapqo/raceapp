@@ -130,6 +130,10 @@ img {
   margin: 3rem 0;
 }
 
+.postactions {
+  width: 60rem
+}
+
 .btn {
   display: inline-block;
   background: var(--light-color);
