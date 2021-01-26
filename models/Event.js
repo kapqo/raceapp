@@ -21,14 +21,22 @@ const EventSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  sure: {
-    type: Schema.Types.ObjectId,
-    ref: 'users'
-  },
-  unsure: {
-    type: Schema.Types.ObjectId,
-    ref: 'users'
-  }
+  sure: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+      }
+    }
+  ],
+  unsure: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+      }
+    }
+  ]
 });
 
 module.exports = Event = mongoose.model('event', EventSchema);

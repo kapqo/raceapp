@@ -17,15 +17,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const {
-      name,
-      avatar,
-      description,
-      user,
-      members,
-      status,
-      admin
-    } = req.body;
+    const { name, avatar, description, status, admin } = req.body;
 
     //Build group object
     const groupFields = {};
