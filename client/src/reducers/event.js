@@ -23,25 +23,25 @@ export default function (state = initialState, action) {
     case GET_EVENTS:
       return {
         ...state,
-        groups: payload,
+        events: payload,
         loading: false
       };
     case GET_EVENT:
       return {
         ...state,
-        group: payload,
+        event: payload,
         loading: false
       };
     case ADD_EVENT:
       return {
         ...state,
-        groups: [payload, ...state.groups],
+        events: [payload, ...state.events],
         loading: false
       };
     case DELETE_EVENT:
       return {
         ...state,
-        groups: state.groups.filter(group => group._id !== payload),
+        events: state.events.filter(event => event._id !== payload),
         loading: false
       };
     case EVENT_ERROR:
@@ -49,31 +49,29 @@ export default function (state = initialState, action) {
         ...state,
         error: payload,
         loading: false,
-        group: null
+        event: null
       };
     case CLEAR_EVENT:
       return {
         ...state,
-        group: null,
+        event: null,
         loading: false
       };
     case UPDATE_SURE:
       return {
         ...state,
-        groups: state.groups.map(group =>
-          group._id === payload.id
-            ? { ...group, members: payload.members }
-            : group
+        events: state.events.map(event =>
+          event._id === payload.id ? { ...event, sure: payload.sure } : event
         ),
         loading: false
       };
-    case UPDATE_SURE:
+    case UPDATE_UNSURE:
       return {
         ...state,
-        groups: state.groups.map(group =>
-          group._id === payload.id
-            ? { ...group, members: payload.members }
-            : group
+        events: state.events.map(event =>
+          event._id === payload.id
+            ? { ...event, unsure: payload.unsure }
+            : event
         ),
         loading: false
       };

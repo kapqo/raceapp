@@ -134,7 +134,7 @@ export const editGroup = (groupId, formData, history) => async dispatch => {
     const res = await axios.put(`/api/group/${groupId}`, formData, config);
 
     dispatch({
-      type: GET_GROUPS,
+      type: GET_GROUP,
       payload: res.data
     });
 
