@@ -7,6 +7,7 @@ import { Item, Label, Icon } from 'semantic-ui-react';
 
 const EventItem = ({
   auth,
+  showActions,
   event: { _id, title, location, date, organizer, description, sure, unsure }
 }) => {
   return (
@@ -30,18 +31,24 @@ const EventItem = ({
               <Icon name='question' />
               Interested:{'  ' + unsure.length}
             </Label>
-            <Link
-              to={`/events/${_id}`}
-              className='ui right floated primary button'
-            >
-              Show more
-              <Icon name='chevron right' />
-            </Link>
+            {showActions && (
+              <Link
+                to={`/events/${_id}`}
+                className='ui right floated primary button'
+              >
+                Show more
+                <Icon name='chevron right' />
+              </Link>
+            )}
           </Item.Extra>
         </Item.Content>
       </Item>
     </Fragment>
   );
+};
+
+EventItem.defaultProps = {
+  showActions: true
 };
 
 EventItem.propTypes = {

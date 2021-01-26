@@ -16,6 +16,7 @@ import Groups from './components/groups/Group';
 import AddGroup from './components/groups/AddGroup';
 import EditGroup from './components/groups/EditGroup';
 import Events from './components/events/Events';
+import Event from './components/events/Event';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import PrivateRoute from './components/routing/PrivateRoute';
@@ -103,6 +104,11 @@ const App = () => {
                 exact
                 path='/events'
                 component={Events}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/events/:id'
+                component={Event}
               ></PrivateRoute>
             </Switch>
           </section>
