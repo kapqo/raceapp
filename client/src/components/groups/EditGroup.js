@@ -32,8 +32,6 @@ const EditGroup = ({
       user: loading || !group || !group.user ? '' : group.user,
       status: loading || !group || !group.status ? '' : group.status,
       admin: loading || !group || !group.admin ? '' : group.admin
-    });
-
     //console.log(group);
   }, [loading, getGroup, match.params.id]);
 
