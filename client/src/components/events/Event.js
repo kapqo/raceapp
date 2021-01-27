@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -13,15 +13,15 @@ import {
   addUnsure,
   removeSure,
   removeUnsure,
+  deleteEvent,
 } from "../../actions/event";
-import EventItem from "./EventItem";
 import {
   Container,
   Grid,
   Segment,
   Label,
   Icon,
-  Button,
+  Button
 } from "semantic-ui-react";
 
 const Event = ({
@@ -31,6 +31,7 @@ const Event = ({
   addUnsure,
   removeSure,
   removeUnsure,
+  deleteEvent,
   event: { event, loading },
   auth: { user },
   post: { posts },
@@ -38,14 +39,14 @@ const Event = ({
 }) => {
   useEffect(() => {
     getEvent(match.params.id);
-  }, [getEvent]);
+  }, [getEvent, match.params.id]);
 
   useEffect(() => {
     getPosts();
   }, [getPosts]);
 
   //Show only posts of this event
-  const result = posts.filter(post => post.type === event._id);
+  const result = posts.filter((post) => post.type === match.params.id);
 
   return loading || event === null ? (
     <Spinner />
@@ -63,9 +64,34 @@ const Event = ({
           </Grid.Row>
           <Grid.Row stretched>
             <Grid.Column width={5}>
-              <Segment>Organizer: {event.organizer}</Segment>
+              <Segment>
+                Organizer:{" "}
+                <Link to={`/profile/${event.organizer}`}>
+                  <Label image>
+                    <img src={event.avatar} />
+                    {event.name}
+                  </Label>
+                </Link>
+              </Segment>
+              {event.organizer === user._id ? (
+                <Button.Group>
+                  <Link
+                    to={`/edit-event/${event._id}`}
+                    className="ui grey button"
+                  >
+                    Edit Event
+                  </Link>
+                  <Button.Or />
+                  <Button color="red" onClick={(e) => deleteEvent(event._id)}>
+                    Delete event
+                  </Button>
+                </Button.Group>
+              ) : null}
               <Segment>
                 Date: <Moment format="YYYY/MM/DD">{event.date}</Moment>
+                {event.time.length > 0 ? (
+                  <div>Start:{" " + event.time}</div>
+                ) : null}
               </Segment>
               <Segment textAlign="center">
                 Location:{" "}
@@ -88,53 +114,40 @@ const Event = ({
                   Interested:{"  " + event.unsure.length}
                 </Label>
               </Segment>
-              <Segment textAlign="center">
-                {event.sure.find((sure) => sure.user === user._id) ? (
-                  <Button color="red" onClick={(e) => removeSure(event._id)}>
-                    Leave
+              {event.sure.find((sure) => sure.user === user._id) ? (
+                <Button color="red" onClick={(e) => removeSure(event._id)}>
+                  Leave
+                </Button>
+              ) : event.unsure.find((unsure) => unsure.user === user._id) ? (
+                <Button color="red" onClick={(e) => removeUnsure(event._id)}>
+                  Leave
+                </Button>
+              ) : (
+                <Button.Group>
+                  <Button color="green" onClick={(e) => addSure(event._id)}>
+                    I'am in!
                   </Button>
-                ) : event.unsure.find((unsure) => unsure.user === user._id) ? (
-                  <Button color="red" onClick={(e) => removeUnsure(event._id)}>
-                    Leave
+                  <Button.Or />
+                  <Button color="yellow" onClick={(e) => addUnsure(event._id)}>
+                    I'am interested
                   </Button>
-                ) : (
-                  <div>
-                    <Button color="green" onClick={(e) => addSure(event._id)}>
-                      I'am in!
-                    </Button>
-                    <Button
-                      color="yellow"
-                      onClick={(e) => addUnsure(event._id)}
-                    >
-                      I'am interested
-                    </Button>
-                  </div>
-                )}
-                {/* {event.unsure.find(unsure => unsure.user === user._id) ? (
-                  <Button color='red' onClick={e => removeUnsure(event._id)}>
-                    Leave
-                  </Button>
-                ) : null} */}
-              </Segment>
+                </Button.Group>
+              )}
             </Grid.Column>
             <Grid.Column>
               <Segment>Description: {event.description}</Segment>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row stretched>
-            <Grid.Column >
-              <div className="postactions">
-                <Segment>
-                    <PostForm id={event._id} />
-                  <div className="posts">
-                    {result.map((post) => (
-                      <PostItem key={post._id} post={post} />
-                    ))}
-                  </div>
-                </Segment>
+          <Container>
+            <div className="postactions">
+              <PostForm id={event._id} />
+              <div className="posts">
+                {result.map((post) => (
+                  <PostItem key={post._id} post={post} />
+                ))}
               </div>
-            </Grid.Column>
-          </Grid.Row>
+            </div>
+          </Container>
         </Grid>
       </Container>
     </Fragment>
@@ -151,6 +164,7 @@ Event.propTypes = {
   auth: PropTypes.object.isRequired,
   renoveUnsure: PropTypes.func.isRequired,
   removeSure: PropTypes.func.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -166,4 +180,5 @@ export default connect(mapStateToProps, {
   addUnsure,
   removeSure,
   removeUnsure,
+  deleteEvent,
 })(Event);

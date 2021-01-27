@@ -1,12 +1,12 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import PostItem from '../posts/PostItem';
-import PostForm from '../posts/PostForm';
-import Spinner from '../layout/Spinner';
-import { getPosts } from '../../actions/post';
-import { getProfileById } from '../../actions/profile';
+import React, { Fragment, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import PostItem from "../posts/PostItem";
+import PostForm from "../posts/PostForm";
+import Spinner from "../layout/Spinner";
+import { getPosts } from "../../actions/post";
+import { getProfileById } from "../../actions/profile";
 import {
   Card,
   Label,
@@ -16,9 +16,9 @@ import {
   Header,
   Modal,
   Button,
-  Grid
-} from 'semantic-ui-react';
-import { deleteGroup, addMember, removeMember } from '../../actions/group';
+  Grid,
+} from "semantic-ui-react";
+import { deleteGroup, addMember, removeMember } from "../../actions/group";
 
 const GroupItem = ({
   addMember,
@@ -29,7 +29,7 @@ const GroupItem = ({
   profile: { profile, loading },
   group: { _id, name, avatar, status, description, members, admin, group },
   post: { posts },
-  getPosts
+  getPosts,
 }) => {
   useEffect(() => {
     getProfileById(admin);
@@ -40,7 +40,7 @@ const GroupItem = ({
   }, [getPosts]);
 
   //Show only posts of this group
-  const result = posts.filter(post => post.type === _id);
+  const result = posts.filter((post) => post.type === _id);
 
   //const resultM = members.filter(group => group.members === user._id )
 
@@ -51,24 +51,24 @@ const GroupItem = ({
   ) : (
     <Fragment>
       <Card>
-        {avatar !== '' ? (
+        {avatar !== "" ? (
           <Image src={avatar} wrapped ui={false} />
         ) : (
           <Segment>
             <Header icon>
-              <Icon name='image outline' />
+              <Icon name="image outline" />
               No avatar added
             </Header>
           </Segment>
         )}
         <Card.Content>
           <Card.Header>{name}</Card.Header>
-          <Card.Meta>{status === true ? 'Private' : 'Public'}</Card.Meta>
+          <Card.Meta>{status === true ? "Private" : "Public"}</Card.Meta>
           <Card.Description>{description}</Card.Description>
         </Card.Content>
         <Card.Content extra>
           <a>
-            <Icon name='user' />
+            <Icon name="user" />
             {members.length} Members
           </a>
         </Card.Content>
@@ -81,15 +81,15 @@ const GroupItem = ({
           <Modal.Header>{name}</Modal.Header>
           <Modal.Content image>
             <Modal.Description>
-              <Grid columns='equal' divided container>
+              <Grid columns="equal" divided container>
                 <Grid.Row stretched>
                   <Grid.Column width={4}>
-                    {avatar !== '' ? (
-                      <Image size='medium' src={avatar} wrapped />
+                    {avatar !== "" ? (
+                      <Image size="medium" src={avatar} wrapped />
                     ) : (
                       <Segment placeholder>
                         <Header icon>
-                          <Icon name='image outline' />
+                          <Icon name="image outline" />
                           No avatar added for this group.
                         </Header>
                       </Segment>
@@ -97,7 +97,7 @@ const GroupItem = ({
                   </Grid.Column>
                   <Grid.Column>
                     <Segment vertical>
-                      <Label color={'green'}>Admin:</Label>
+                      <Label color={"green"}>Admin:</Label>
                       <Link to={`/profile/${admin}`}>
                         <Label>Admin profile</Label>
                       </Link>
@@ -105,23 +105,23 @@ const GroupItem = ({
 
                     <Segment vertical>
                       <Label>Description:</Label>
-                      {' ' + description}
+                      {" " + description}
                       <br />
                     </Segment>
                     <Segment vertical>
-                      {members.find(members => members.user === user._id) ? (
+                      {members.find((members) => members.user === user._id) ? (
                         <Button
-                          onClick={e => removeMember(_id)}
-                          type='button'
-                          color='red'
+                          onClick={(e) => removeMember(_id)}
+                          type="button"
+                          color="red"
                         >
                           Leave group
                         </Button>
                       ) : (
                         <Button
-                          onClick={e => addMember(_id)}
-                          type='button'
-                          color='olive'
+                          onClick={(e) => addMember(_id)}
+                          type="button"
+                          color="olive"
                         >
                           Join in
                         </Button>
@@ -131,9 +131,9 @@ const GroupItem = ({
                 </Grid.Row>
                 <Grid.Row stretched>
                   <Grid.Column>
-                    <div className='postactions'>
+                    <div className="postactions">
                       {status === true &&
-                      !members.find(members => members.user === user._id) ? (
+                      !members.find((members) => members.user === user._id) ? (
                         <Segment>
                           <Header>
                             Group is private. Join us to see more!
@@ -142,12 +142,12 @@ const GroupItem = ({
                       ) : (
                         <Segment>
                           {members.find(
-                            members => members.user === user._id
+                            (members) => members.user === user._id
                           ) ? (
                             <PostForm id={_id} />
                           ) : null}
-                          <div className='posts'>
-                            {result.map(post => (
+                          <div className="posts">
+                            {result.map((post) => (
                               <PostItem key={post._id} post={post} />
                             ))}
                           </div>
@@ -161,20 +161,20 @@ const GroupItem = ({
           </Modal.Content>
           <Modal.Actions>
             {user._id === admin ? (
-              <Link to={`/edit-group/${_id}`} className='ui grey button'>
+              <Link to={`/edit-group/${_id}`} className="ui grey button">
                 Edit
               </Link>
             ) : null}
             {user._id === admin ? (
               <button
                 onClick={() => deleteGroup(_id)}
-                className='ui negative button'
+                className="ui negative button"
               >
                 Delete
               </button>
             ) : null}
             <Button primary onClick={() => setOpen(false)}>
-              Close <Icon name='right chevron' />
+              Close <Icon name="right chevron" />
             </Button>
           </Modal.Actions>
         </Modal>
@@ -192,13 +192,13 @@ GroupItem.propTypes = {
   deleteGroup: PropTypes.func.isRequired,
   addMember: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  removeMember: PropTypes.func.isRequired
+  removeMember: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   post: state.post,
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
@@ -206,5 +206,5 @@ export default connect(mapStateToProps, {
   getPosts,
   getProfileById,
   deleteGroup,
-  removeMember
+  removeMember,
 })(GroupItem);

@@ -17,6 +17,8 @@ import AddGroup from './components/groups/AddGroup';
 import EditGroup from './components/groups/EditGroup';
 import Events from './components/events/Events';
 import Event from './components/events/Event';
+import AddEvent from './components/events/AddEvent';
+import EditEvent from './components/events/EditEvent';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import PrivateRoute from './components/routing/PrivateRoute';
@@ -109,6 +111,16 @@ const App = () => {
                 exact
                 path='/events/:id'
                 component={Event}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/add-event'
+                component={AddEvent}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/edit-event/:id'
+                component={EditEvent}
               ></PrivateRoute>
             </Switch>
           </section>

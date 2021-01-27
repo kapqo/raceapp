@@ -14,9 +14,18 @@ const EventSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  time: {
+    type: String
+  },
   organizer: {
     type: Schema.Types.ObjectId,
     ref: 'users'
+  },
+  name: {
+    type: String
+  },
+  avatar: {
+    type: String
   },
   description: {
     type: String
