@@ -21,7 +21,7 @@ import {
   Segment,
   Label,
   Icon,
-  Button
+  Button,
 } from "semantic-ui-react";
 
 const Event = ({

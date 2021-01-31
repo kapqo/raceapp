@@ -236,13 +236,14 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, location, date, description } = req.body;
+    const { title, location, date, time, description } = req.body;
 
     const eventFields = {};
 
     if (title) eventFields.title = title;
     if (location) eventFields.location = location;
     if (date) eventFields.date = date;
+    if (time) eventFields.time = time;
     if (description) eventFields.description = description;
 
     try {

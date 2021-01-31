@@ -94,8 +94,8 @@ const EditGroup = ({
         </Fragment>
       )}
     </Fragment>
-  );
-};
+  )
+})}
 
 EditGroup.propTypes = {
   editGroup: PropTypes.func.isRequired,
@@ -109,4 +109,4 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { getGroup, editGroup })(
   withRouter(EditGroup)
-);
+)

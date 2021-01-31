@@ -17,7 +17,9 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, avatar, description, status, admin } = req.body;
+    const { name, avatar, description, status, admin, adminname, adminavatar } = req.body;
+
+    const user = await User.findById(req.user.id).select("-password");
 
     //Build group object
     const groupFields = {};
@@ -26,21 +28,12 @@ router.post(
     groupFields.avatar = avatar;
     if (description) groupFields.description = description;
     if (status) groupFields.status = status;
-    if (admin) groupFields.admin = admin;
+    groupFields.admin = user;
+    groupFields.adminname = user.name;
+    groupFields.adminavatar = user.avatar;
 
     try {
       let group = await Group.findOne({ user: req.user.id });
-
-      if (group) {
-        //Update
-        group = await Group.findOneAndUpdate(
-          { user: req.user.id },
-          { $set: groupFields },
-          { new: true }
-        );
-
-        return res.json(group);
-      }
 
       //Create
       group = new Group(groupFields);

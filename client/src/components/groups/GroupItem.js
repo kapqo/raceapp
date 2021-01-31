@@ -27,7 +27,7 @@ const GroupItem = ({
   getProfileById,
   auth: { user },
   profile: { profile, loading },
-  group: { _id, name, avatar, status, description, members, admin, group },
+  group: { _id, name, avatar, status, description, members, admin, adminname, adminavatar, group },
   post: { posts },
   getPosts,
 }) => {
@@ -99,7 +99,10 @@ const GroupItem = ({
                     <Segment vertical>
                       <Label color={"green"}>Admin:</Label>
                       <Link to={`/profile/${admin}`}>
-                        <Label>Admin profile</Label>
+                          <Label image>
+                            <img src={adminavatar} />
+                            {adminname}
+                          </Label>
                       </Link>
                     </Segment>
 

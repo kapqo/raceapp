@@ -31,14 +31,15 @@ const AddGroup = ({
     description: '',
     user: '',
     status: false,
-    admin: ''
+    admin: '',
+    adminname: '',
+    adminavatar: ''
   });
 
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const setAdmin = () => setFormData({ ...formData, admin: profile.user._id });
   //const setMember = () => setFormData({...formData, id: groupAdmin})
 
   const { name, avatar, description, user, status, admin } = formData;
@@ -146,7 +147,7 @@ const AddGroup = ({
             </Grid.Row>
           </Grid>
         </Form.Field>
-        <Button type='submit' onClick={setAdmin}>
+        <Button type='submit'>
           Submit
         </Button>
       </Form>
