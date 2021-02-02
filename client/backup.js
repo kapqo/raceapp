@@ -72,10 +72,10 @@ const Profile = ({
     }
   ];
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyAG9KkDxqCHEaLULRxKbpPqoPhe8w3TYak',
+    googleMapsApiKey: 'nic',
     libraries
   });
-  Geocode.setApiKey('AIzaSyAG9KkDxqCHEaLULRxKbpPqoPhe8w3TYak');
+  Geocode.setApiKey('nic');
   const mapRef = React.useRef();
   const onMapLoad = React.useCallback(map => {
     mapRef.current = map;
