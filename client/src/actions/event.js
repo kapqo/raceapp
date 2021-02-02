@@ -62,7 +62,7 @@ export const deleteEvent = id => async dispatch => {
 };
 
 //Add event
-export const addEvent = formData => async dispatch => {
+export const addEvent = (formData, history) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -78,6 +78,8 @@ export const addEvent = formData => async dispatch => {
     });
 
     dispatch(setAlert('Event Created', 'success'));
+
+    history.push('/events');
   } catch (error) {
     dispatch({
       type: EVENT_ERROR,
@@ -127,7 +129,7 @@ export const addUnsure = id => async dispatch => {
 
     dispatch({
       type: UPDATE_UNSURE,
-      payload: { id, sure: res.data }
+      payload: { id, unsure: res.data }
     });
   } catch (error) {
     dispatch({
@@ -144,7 +146,7 @@ export const removeUnsure = id => async dispatch => {
 
     dispatch({
       type: UPDATE_UNSURE,
-      payload: { id, sure: res.data }
+      payload: { id, unsure: res.data }
     });
   } catch (error) {
     dispatch({

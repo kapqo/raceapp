@@ -64,7 +64,7 @@ export const deleteGroup = id => async dispatch => {
 };
 
 // Add group
-export const addGroup = formData => async dispatch => {
+export const addGroup = (formData, history) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -80,6 +80,8 @@ export const addGroup = formData => async dispatch => {
     });
 
     dispatch(setAlert('Group Created', 'success'));
+
+    history.push('/groups');
   } catch (error) {
     dispatch({
       type: GROUP_ERROR,

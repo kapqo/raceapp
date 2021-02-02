@@ -25,14 +25,14 @@ const EditGroup = ({
   useEffect(() => {
     getGroup(match.params.id);
     setFormData({
-      name: loading || !group || !group.name ? '' : group.name,
-      avatar: loading || !group || !group.avatar ? '' : group.avatar,
-      description:
-        loading || !group || !group.description ? '' : group.description,
-      user: loading || !group || !group.user ? '' : group.user,
-      status: loading || !group || !group.status ? '' : group.status,
-      admin: loading || !group || !group.admin ? '' : group.admin
-    //console.log(group);
+      name: loading || !group.name ? '' : group.name,
+      avatar: loading || !group.avatar ? '' : group.avatar,
+      description: loading || !group.description ? '' : group.description,
+      user: loading || !group.user ? '' : group.user,
+      status: loading || !group.status ? '' : group.status,
+      admin: loading || !group.admin ? '' : group.admin
+      //console.log(group);
+    });
   }, [loading, getGroup, match.params.id]);
 
   const { name, avatar, description, status } = formData;
@@ -40,62 +40,58 @@ const EditGroup = ({
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  return (
+  return group === null || loading ? (
+    <Spinner />
+  ) : (
     <Fragment>
-      {group === null || loading ? (
-        <Spinner />
-      ) : (
-        <Fragment>
-          <h1 class='large textcustom'>Edit a Group</h1>
-          <Form
-            onSubmit={e => {
-              e.preventDefault();
-              editGroup(match.params.id, formData, history);
-            }}
-          >
-            <Form.Field>
-              <label>Group's name</label>
-              <input
-                type='text'
-                placeholder="Group's name"
-                name='name'
-                required
-                value={name}
-                onChange={e => onChange(e)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Desciption</label>
-              <textarea
-                name='description'
-                cols='30'
-                rows='5'
-                placeholder="Group's description, rules, etc."
-                value={description}
-                onChange={e => onChange(e)}
-              ></textarea>
-            </Form.Field>
-            <Form.Field>
-              <Label>
-                <Radio
-                  toggle
-                  checked={status}
-                  value={status}
-                  name='status'
-                  onChange={e => {
-                    setFormData({ ...formData, status: !status });
-                  }}
-                />
-                <Icon circular name='key' color='blue'></Icon>Private
-              </Label>
-            </Form.Field>
-            <Button type='submit'>Submit</Button>
-          </Form>
-        </Fragment>
-      )}
+      <h1 class='large textcustom'>Edit a Group</h1>
+      <Form
+        onSubmit={e => {
+          e.preventDefault();
+          editGroup(match.params.id, formData, history);
+        }}
+      >
+        <Form.Field>
+          <label>Group's name</label>
+          <input
+            type='text'
+            placeholder="Group's name"
+            name='name'
+            required
+            value={name}
+            onChange={e => onChange(e)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>Desciption</label>
+          <textarea
+            name='description'
+            cols='30'
+            rows='5'
+            placeholder="Group's description, rules, etc."
+            value={description}
+            onChange={e => onChange(e)}
+          ></textarea>
+        </Form.Field>
+        <Form.Field>
+          <Label>
+            <Radio
+              toggle
+              checked={status}
+              value={status}
+              name='status'
+              onChange={e => {
+                setFormData({ ...formData, status: !status });
+              }}
+            />
+            <Icon circular name='key' color='blue'></Icon>Private
+          </Label>
+        </Form.Field>
+        <Button type='submit'>Submit</Button>
+      </Form>
     </Fragment>
-  )
-})}
+  );
+};
 
 EditGroup.propTypes = {
   editGroup: PropTypes.func.isRequired,
@@ -109,4 +105,4 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { getGroup, editGroup })(
   withRouter(EditGroup)
-)
+);

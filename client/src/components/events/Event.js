@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -21,8 +21,12 @@ import {
   Segment,
   Label,
   Icon,
-  Button
+  Button,
+  Modal
 } from 'semantic-ui-react';
+import Geocode from 'react-geocode';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import usePlacesAutocomplete from 'use-places-autocomplete';
 
 const Event = ({
   getEvent,
@@ -48,6 +52,134 @@ const Event = ({
   //Show only posts of this event
   const result = posts.filter(post => post.type === match.params.id);
 
+  <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCHvNcR5bgwTZIa6IMfudnOaNCR9xmXOwQ&libraries=places'></script>;
+
+  const [lat, setLat] = useState('');
+  const [lng, setLng] = useState('');
+
+  const libraries = ['places'];
+
+  const mapContainerStyle = {
+    width: '47vw',
+    height: '50vh'
+  };
+
+  const center = {
+    lat: lat,
+    lng: lng
+  };
+  const locationsMarker = [
+    {
+      location: {
+        lat: lat,
+        lng: lng
+      }
+    }
+  ];
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyCHvNcR5bgwTZIa6IMfudnOaNCR9xmXOwQ',
+    libraries
+  });
+  Geocode.setApiKey('AIzaSyCHvNcR5bgwTZIa6IMfudnOaNCR9xmXOwQ');
+  const mapRef = React.useRef();
+  const onMapLoad = React.useCallback(map => {
+    mapRef.current = map;
+  }, []);
+
+  const moveTo = React.useCallback(({ lat, lng }) => {
+    mapRef.current.moveTo({ lat, lng });
+    mapRef.current.setZoom(14);
+  }, []);
+
+  if (loadError) return 'Error loading maps';
+  if (!isLoaded) return 'Loading Maps';
+
+  function exampleReducer(state, action) {
+    switch (action.type) {
+      case 'OPEN_MODAL':
+        return { open: true, dimmer: action.dimmer };
+      case 'CLOSE_MODAL':
+        return { open: false };
+      default:
+        throw new Error();
+    }
+  }
+
+  function Search({ moveTo }) {
+    const [state, dispatch] = React.useReducer(exampleReducer, {
+      open: false,
+      dimmer: undefined
+    });
+    const { open, dimmer } = state;
+    const {
+      ready,
+      value,
+      suggestions: { status, data },
+      setValue,
+      clearSuggestions
+    } = usePlacesAutocomplete({
+      requestOptions: {
+        location: { lat: () => 43.6532, lng: () => -79.3832 },
+        radius: 100 * 1000
+      }
+    });
+
+    return (
+      <div>
+        <Button
+          icon
+          onClick={async address => {
+            const eventloc = event.location;
+
+            try {
+              await Geocode.fromAddress(eventloc).then(
+                response => {
+                  const { lat, lng } = response.results[0].geometry.location;
+
+                  setLat(lat);
+                  setLng(lng);
+                },
+                error => {
+                  console.error(error);
+                }
+              );
+            } catch (error) {
+              console.log('😱 Error: ', error);
+            }
+            dispatch({ type: 'OPEN_MODAL' });
+          }}
+        >
+          <Icon name='map marker alternate' />
+        </Button>
+
+        <Modal
+          dimmer={dimmer}
+          open={open}
+          centered
+          onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
+        >
+          <Modal.Header>Location:</Modal.Header>
+          <Modal.Content>
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={18}
+              center={center}
+            >
+              {locationsMarker.map(item => {
+                return <Marker key={item.name} position={item.location} />;
+              })}
+            </GoogleMap>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button negative onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
+              Close
+            </Button>
+          </Modal.Actions>
+        </Modal>
+      </div>
+    );
+  }
+
   return loading || event === null || user === null ? (
     <Spinner />
   ) : (
@@ -55,7 +187,6 @@ const Event = ({
       <Link to='/events' className='btn btncustom'>
         Back to events
       </Link>
-      {console.log(user)}
       <Container>
         <Grid columns={'equal'} divided>
           <Grid.Row stretched>
@@ -100,9 +231,7 @@ const Event = ({
                   <Label as='a' basic pointing='right'>
                     {event.location}
                   </Label>
-                  <Button icon>
-                    <Icon name='map marker alternate' />
-                  </Button>
+                  <Search moveTo={moveTo} />
                 </Button>
               </Segment>
               <Segment textAlign='center'>
@@ -163,7 +292,7 @@ Event.propTypes = {
   addUnsure: PropTypes.func.isRequired,
   addSure: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  renoveUnsure: PropTypes.func.isRequired,
+  removeUnsure: PropTypes.func.isRequired,
   removeSure: PropTypes.func.isRequired,
   deleteEvent: PropTypes.func.isRequired
 };
