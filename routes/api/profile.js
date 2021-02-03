@@ -44,6 +44,7 @@ router.post(
       location,
       bio,
       interests,
+      avatar,
       instagram,
       facebook,
       youtube
@@ -66,14 +67,28 @@ router.post(
     if (facebook) profileFields.social.facebook = facebook;
     if (youtube) profileFields.social.youtube = youtube;
 
+    const userFields = {};
+    userFields.avatar = avatar;
+
     try {
       let profile = await Profile.findOne({ user: req.user.id });
+      let user = await User.findOne({ _id: req.user.id });
 
       if (profile) {
         //Update
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
+          { new: true }
+        );
+
+        user = await User.findOneAndUpdate(
+          { _id: req.user.id },
+          {
+            $set: {
+              avatar: userFields.avatar
+            }
+          },
           { new: true }
         );
 
