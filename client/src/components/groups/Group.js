@@ -12,7 +12,8 @@ import {
   Icon,
   Label,
   Grid,
-  Button
+  Button,
+  Comment
 } from 'semantic-ui-react';
 
 const Group = ({ getGroups, group: { groups, loading } }) => {

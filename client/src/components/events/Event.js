@@ -22,7 +22,8 @@ import {
   Label,
   Icon,
   Button,
-  Modal
+  Modal,
+  Comment
 } from 'semantic-ui-react';
 import Geocode from 'react-geocode';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
@@ -271,11 +272,11 @@ const Event = ({
           <Container>
             <div className='postactions'>
               <PostForm id={event._id} />
-              <div className='posts'>
+              <Comment.Group size='massive'>
                 {result.map(post => (
                   <PostItem key={post._id} post={post} />
                 ))}
-              </div>
+              </Comment.Group>
             </div>
           </Container>
         </Grid>

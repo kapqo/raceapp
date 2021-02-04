@@ -6,6 +6,7 @@ import PostItem from './PostItem';
 import PostForm from './PostForm';
 import { getPosts } from '../../actions/post';
 import { getCurrentProfile } from '../../actions/profile';
+import { Comment, Header } from 'semantic-ui-react';
 
 const Posts = ({
   getPosts,
@@ -15,34 +16,33 @@ const Posts = ({
   profile: { profile }
 }) => {
   useEffect(() => {
-    getPosts();
-  }, [getPosts]);
+    getPosts().then(() => {
+      getCurrentProfile();
+    });
+  }, [getPosts, getCurrentProfile]);
 
-  useEffect(() => {
-    getCurrentProfile();
-  }, [getCurrentProfile]);
+  const result = profile
+    ? posts.filter(
+        post =>
+          (post.type === '' &&
+            profile.following.find(follow => follow.user === post.user)) ||
+          (post.user === user._id && post.type === '')
+      )
+    : [];
 
-  const result = posts.filter(
-    post =>
-      (post.type === '' &&
-        profile.following.find(follow => follow.user === post.user)) ||
-      (post.user === user._id && post.type === '')
-  );
-
-  return loading ? (
+  return loading || profile === null ? (
     <Spinner />
   ) : (
     <Fragment>
-      <h1 className='large textcustom'>Posts</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Welcome to the community
-      </p>
+      <Header as='h2'>Your wall</Header>
       <PostForm id={''} />
-      <div className='posts'>
+      <Comment.Group size='massive'>
         {result.map(post => (
+          //<Segment size='huge' raised>
           <PostItem key={post._id} post={post} />
+          //</Segment>
         ))}
-      </div>
+      </Comment.Group>
     </Fragment>
   );
 };

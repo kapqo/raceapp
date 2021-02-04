@@ -40,7 +40,7 @@ img {
 
 /* Utilities */
 .container {
-  max-width: 90%;
+  max-width: 60%;
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
@@ -332,6 +332,15 @@ button {
   background: var(--light-color);
 }
 
+/* Sidebar */
+.sidebar {
+  display: flex;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  margin-top: 200px;
+}
+
 /* Navbar */
 .navbar {
   display: flex;
@@ -608,4 +617,8 @@ button {
   .post button {
     padding: 0.3rem 0.4rem;
   }
+}
+
+.ui.massive.comments {
+  max-width: unset;
 }
