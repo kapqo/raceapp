@@ -1,15 +1,22 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import ProfileItem from './ProfileItem';
 import { getProfiles } from '../../actions/profile';
-import { Card } from 'semantic-ui-react';
+import { Card, Input } from 'semantic-ui-react';
 
 const Profile = ({ getProfiles, profile: { profiles, loading } }) => {
   useEffect(() => {
     getProfiles();
   }, [getProfiles]);
+
+  const [name, setName] = useState('');
+  const [inp, setInp] = useState('');
+
+  let names = profiles.filter(profile =>
+    profile.user.name.toLowerCase().includes(inp.toLowerCase())
+  );
 
   return (
     <Fragment>
@@ -24,9 +31,21 @@ const Profile = ({ getProfiles, profile: { profiles, loading } }) => {
               Browse and connect with users
             </i>
           </p>
+          <p>
+            <Input
+              icon='users'
+              iconPosition='left'
+              placeholder='Search users...'
+              onChange={e => {
+                let input = e.target.value;
+                setName(input);
+                setInp(input);
+              }}
+            />
+          </p>
           <Card.Group itemsPerRow='4'>
             {profiles.length > 0 ? (
-              profiles.map(profile => (
+              names.map(profile => (
                 <ProfileItem key={profile._id} profile={profile} />
               ))
             ) : (
