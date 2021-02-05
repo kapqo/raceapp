@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
+import Ad from './components/layout/Ad';
 import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
@@ -44,8 +45,8 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Fragment>
-          <Sidebar />
           <Navbar />
+          <Sidebar />
           <Route exact path='/' component={Landing} />
           <section className='container'>
             <Alert />
@@ -126,6 +127,7 @@ const App = () => {
               ></PrivateRoute>
             </Switch>
           </section>
+          <Ad />
         </Fragment>
       </Router>
     </Provider>

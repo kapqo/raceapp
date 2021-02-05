@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
@@ -6,7 +6,8 @@ import PostItem from './PostItem';
 import PostForm from './PostForm';
 import { getPosts } from '../../actions/post';
 import { getCurrentProfile } from '../../actions/profile';
-import { Comment, Header } from 'semantic-ui-react';
+import { Comment, Header, Icon } from 'semantic-ui-react';
+import Pages from './Pages';
 
 const Posts = ({
   getPosts,
@@ -21,8 +22,17 @@ const Posts = ({
     });
   }, [getPosts, getCurrentProfile]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
   const result = profile
-    ? posts.filter(
+    ? currentPosts.filter(
         post =>
           (post.type === '' &&
             profile.following.find(follow => follow.user === post.user)) ||
@@ -34,7 +44,11 @@ const Posts = ({
     <Spinner />
   ) : (
     <Fragment>
-      <Header as='h2'>Your wall</Header>
+      <Header as='h1' icon textAlign='center'>
+        <Icon name='feed' circular />
+        <Header.Content>Your wall</Header.Content>
+      </Header>
+
       <PostForm id={''} />
       <Comment.Group size='massive'>
         {result.map(post => (
@@ -43,6 +57,11 @@ const Posts = ({
           //</Segment>
         ))}
       </Comment.Group>
+      <Pages
+        postsPerPage={postsPerPage}
+        totalPosts={posts.length}
+        paginate={paginate}
+      />
     </Fragment>
   );
 };

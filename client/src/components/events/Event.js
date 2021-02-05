@@ -185,7 +185,7 @@ const Event = ({
     <Spinner />
   ) : (
     <Fragment>
-      <Link to='/events' className='btn btncustom'>
+      <Link to='/events' className='ui grey button'>
         Back to events
       </Link>
       <Container>
@@ -270,14 +270,12 @@ const Event = ({
             </Grid.Column>
           </Grid.Row>
           <Container>
-            <div className='postactions'>
-              <PostForm id={event._id} />
-              <Comment.Group size='massive'>
-                {result.map(post => (
-                  <PostItem key={post._id} post={post} />
-                ))}
-              </Comment.Group>
-            </div>
+            <PostForm id={event._id} />
+            <Comment.Group size='massive'>
+              {result.map(post => (
+                <PostItem key={post._id} post={post} />
+              ))}
+            </Comment.Group>
           </Container>
         </Grid>
       </Container>

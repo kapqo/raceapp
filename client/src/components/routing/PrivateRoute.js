@@ -1,19 +1,32 @@
-import React from 'react'
-import{ Route, Redirect } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 //zabezpieczenie przed dostępem do podstron osób niezalogowanych itp
-const PrivateRoute = ({ component: Component, auth: { isAuthenticated, loading }, ...rest }) => (
-    <Route {...rest} render={props => !isAuthenticated && !loading ? (<Redirect to='/login' />) : (<Component {...props} />)} />
-)
+const PrivateRoute = ({
+  component: Component,
+  auth: { isAuthenticated, loading },
+  ...rest
+}) => (
+  <Route
+    {...rest}
+    render={props =>
+      !isAuthenticated && !loading ? (
+        <Redirect to='/' />
+      ) : (
+        <Component {...props} />
+      )
+    }
+  />
+);
 
 PrivateRoute.propTypes = {
-    auth: PropTypes.object.isRequired,
-}
+  auth: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
-    auth: state.auth
+  auth: state.auth
 });
 
-export default connect(mapStateToProps)(PrivateRoute)
+export default connect(mapStateToProps)(PrivateRoute);

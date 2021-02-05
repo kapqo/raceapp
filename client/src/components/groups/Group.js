@@ -12,8 +12,7 @@ import {
   Icon,
   Label,
   Grid,
-  Button,
-  Comment
+  Button
 } from 'semantic-ui-react';
 
 const Group = ({ getGroups, group: { groups, loading } }) => {
@@ -27,40 +26,44 @@ const Group = ({ getGroups, group: { groups, loading } }) => {
         <Spinner />
       ) : (
         <Fragment>
-          <Container text>
-            <Grid columns='equal'>
-              <Grid.Column width={4}>
-                <Link to='/add-group'>
-                  <Button>Click Here</Button>
-                </Link>
-              </Grid.Column>
-              <Grid.Column stretched>
-                <Label pointing='left' size='large'>
-                  Didn't find a group that suits you? Just create a new group by
-                  clicking here!
-                </Label>
-              </Grid.Column>
-            </Grid>
-            <Header as='h2' icon textAlign='center'>
-              <Icon name='group' circular />
-              <Header.Content>Groups</Header.Content>
-            </Header>
-            <Card.Group centered itemsPerRow={3}>
-              {loading ? (
-                <Spinner />
-              ) : (
-                <Fragment>
-                  {groups.length > 0 ? (
-                    groups.map(group => (
-                      <GroupItem key={group._id} group={group} />
-                    ))
-                  ) : (
-                    <h4>No groups found</h4>
-                  )}
-                </Fragment>
-              )}
-            </Card.Group>
-          </Container>
+          <Header as='h1' icon textAlign='center'>
+            <Icon name='car' circular />
+            <Header.Content>Raceapp Groups</Header.Content>
+          </Header>
+          <Header as='h3' textAlign='center'>
+            Connect your interests with other people! Join to our Groups!
+          </Header>
+          <Grid columns='equal'>
+            <Grid.Row></Grid.Row>
+            <Grid.Column width={4}>
+              <Link to='/add-group'>
+                <Button>Click Here</Button>
+              </Link>
+            </Grid.Column>
+            <Grid.Column stretched>
+              <Label pointing='left' size='large'>
+                Didn't find a group that suits you? Just create a new group by
+                clicking here!
+              </Label>
+            </Grid.Column>
+            <Grid.Row></Grid.Row>
+          </Grid>
+
+          <Card.Group centered itemsPerRow={3}>
+            {loading ? (
+              <Spinner />
+            ) : (
+              <Fragment>
+                {groups.length > 0 ? (
+                  groups.map(group => (
+                    <GroupItem key={group._id} group={group} />
+                  ))
+                ) : (
+                  <h4>No groups found</h4>
+                )}
+              </Fragment>
+            )}
+          </Card.Group>
         </Fragment>
       )}
     </Fragment>

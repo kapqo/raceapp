@@ -3,37 +3,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
-import { getCurrentProfile } from '../../actions/profile';
 import { Icon, Label } from 'semantic-ui-react';
 
 const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
   const authLinks = (
     <ul>
-      <li>
-        <Link to='/profiles'>Users</Link>
-      </li>
-      <li>
-        <Link to='/posts'>Posts</Link>
-      </li>
-      <li>
-        <Link to='/groups'>Groups</Link>
-      </li>
-      <li>
-        <Link to='/events'>Events</Link>
-      </li>
-      <li>
-        <Link to='/dashboard'>
-          <span className='hide-sm'>Dashboard</span>
-        </Link>
-      </li>
-      <li>
-        <Link to='/'>
-          <a onClick={logout} href='#!'>
-            <i className='fas fa-sign-out-alt'></i>{' '}
-            <span className='hide-sm'>Log out</span>
-          </a>
-        </Link>
-      </li>
       <li>
         {user !== null ? (
           <Link to={`/profile/${user._id}`} className='hide-sm'>
@@ -49,12 +23,6 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
 
   const guestLinks = (
     <ul>
-      <li>
-        <Link to='/register'>Sing Up</Link>
-      </li>
-      <li>
-        <Link to='/login'>Log In</Link>
-      </li>
       <li>
         <Link to='#!'>About us</Link>
       </li>

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { storage } from '../../firebase/firebase';
 import { createProfile, getCurrentProfile } from '../../actions/profile';
 import { Progress } from 'semantic-ui-react';
+import { Button, Icon, Header, Form, Grid } from 'semantic-ui-react';
 
 const EditProfile = ({
   profile: { profile, loading },
@@ -121,26 +122,30 @@ const EditProfile = ({
 
   return (
     <Fragment>
-      <h1 className='large textcustom'>Create Your Profile</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Let's get some information to make your
-        profile stand out
-      </p>
-      <small>* = required field</small>
-      <form className='form' onSubmit={e => onSubmit(e)}>
-        <div className='form-group'>
+      <Header as='h1' icon textAlign='center'>
+        <Icon name='edit outline' circular />
+        <Header.Content>Edit your profile!</Header.Content>
+      </Header>
+      <Header as='h3' textAlign='center'>
+        Let's get some information to make your profile stand out
+      </Header>
+      <Form className='form' onSubmit={e => onSubmit(e)}>
+        <Form.Field required>
+          <label>Location</label>
           <input
             type='text'
             placeholder='Location'
             name='location'
             value={location}
+            required
             onChange={e => onChange(e)}
           />
           <small className='form-text'>
             City & district suggested (eg. Cracow, Tyniec)
           </small>
-        </div>
-        <div className='form-group'>
+        </Form.Field>
+        <Form.Field>
+          <label>Bio</label>
           <textarea
             placeholder='A short bio of yourself'
             name='bio'
@@ -148,40 +153,59 @@ const EditProfile = ({
             onChange={e => onChange(e)}
           ></textarea>
           <small className='form-text'>Tell us a little about yourself</small>
-        </div>
-        <div className='form-group'>
+        </Form.Field>
+        <Form.Field required>
+          <label>Interests</label>
           <input
             type='text'
             placeholder='Interests'
             name='interests'
+            required
             value={interests}
             onChange={e => onChange(e)}
           />
           <small className='form-text'>
             Please use comma after each interests (eg. Honda, Vag, Stance, JDM)
           </small>
-        </div>
-        <div class='form-group'>
-          <input
-            type='file'
-            accept='.png, .jpg, .jpeg'
-            onChange={handlePhoto}
-          />
-          <button className='btn' onClick={handleUpload}>
-            Upload
-          </button>
-          <Progress percent={progress} active autoSuccess></Progress>
-        </div>
+        </Form.Field>
+        <Form.Field>
+          <label>Profile's avatar</label>
+
+          <Grid columns='equal'>
+            <Grid.Row>
+              <Grid.Column>
+                <input
+                  type='file'
+                  accept='.png, .jpg, .jpeg'
+                  onChange={handlePhoto}
+                />
+                <small className='form-text'>Optional</small>
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Button type='submit' onClick={handleUpload}>
+                  Upload
+                </Button>
+              </Grid.Column>
+              <Grid.Column stretched>
+                <Progress
+                  percent={progress}
+                  active
+                  autoSuccess
+                  size='large'
+                ></Progress>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Form.Field>
 
         <div className='my-2'>
-          <button
+          <Button
+            color='facebook'
             onClick={() => toggleSocialInputs(!displaySocialInputs)}
-            type='button'
-            className='btn btncustomlight'
           >
             Add Social Network Links
-          </button>
-          <span>Optional</span>
+          </Button>
+          <small className='form-text'>Optional</small>
         </div>
 
         {displaySocialInputs && (
@@ -221,11 +245,11 @@ const EditProfile = ({
           </Fragment>
         )}
 
-        <input type='submit' className='btn btncustom my-1' />
-        <Link className='btn btncustomlight my-1' to='/dashboard'>
+        <input type='submit' className='ui green button' value='Upload' />
+        <Link className='ui yellow button' to='/dashboard'>
           Go Back
         </Link>
-      </form>
+      </Form>
     </Fragment>
   );
 };

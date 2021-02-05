@@ -1,54 +1,82 @@
-import React, { Fragment, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import Spinner from '../layout/Spinner'
-import { deleteAccount, getCurrentProfile } from '../../actions/profile'
-import Vehicle from './Vehicle'
-import DashboardActions from './DashboardActions'
+import React, { Fragment, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Spinner from '../layout/Spinner';
+import { deleteAccount, getCurrentProfile } from '../../actions/profile';
+import Vehicle from './Vehicle';
+import DashboardActions from './DashboardActions';
+import { Button, Icon, Header, Container } from 'semantic-ui-react';
 
-const Dashboard = ({ getCurrentProfile, auth: { user }, profile: {profile, loading}, deleteAccount }) => {
-    useEffect(() => {
-        getCurrentProfile();
-    }, [getCurrentProfile]);
+const Dashboard = ({
+  getCurrentProfile,
+  auth: { user },
+  profile: { profile, loading },
+  deleteAccount
+}) => {
+  useEffect(() => {
+    getCurrentProfile();
+  }, [getCurrentProfile]);
 
-    return loading && profile === null ? <Spinner /> : <Fragment>
-        <h1 className="large textcustom">Dashboard</h1>
-        <p className="lead">
-            <i className="fas fa-user"></i> Welcome { user && user.name }
-        </p>
-        {profile !== null ? (
+  return loading && profile === null ? (
+    <Spinner />
+  ) : (
+    <Fragment>
+      <Header as='h1' icon textAlign='center'>
+        <Icon name='dashboard' circular />
+        <Header.Content>Dashboard</Header.Content>
+      </Header>
+      <Header as='h2' textAlign='center'>
+        <Icon name='user circle' />
+        Welcome {user && user.name}!
+      </Header>
+      {profile !== null ? (
         <Fragment>
-            <DashboardActions />
-            <Vehicle vehicle={profile.vehicle}/>
+          <DashboardActions />
+          <Vehicle vehicle={profile.vehicle} />
 
-            <div className="my-2">
-                <button className="btn btn-danger" onClick={() => deleteAccount()}>
-                    <i className="fas fa-user-minus"></i> Delete my account
-                </button>
-            </div>
+          <div className='my-2'>
+            <Button
+              negative
+              icon
+              labelPosition='left'
+              onClick={() => deleteAccount()}
+            >
+              <Icon name='remove user' /> Delete my account
+            </Button>
+          </div>
         </Fragment>
-        ) : (
+      ) : (
         <Fragment>
-            <p>You have not setup a profile, please add some info</p>
-            <Link to='/create-profile' className="btn btncustom my-1">
+          <Container>
+            <div style={{ textAlign: 'center' }}>
+              <Header>
+                You have not setup a profile, please add some info
+              </Header>
+              <Link to='/create-profile' className='ui green button'>
+                <Icon name='add' />
                 Create Profile
-            </Link>
+              </Link>
+            </div>
+          </Container>
         </Fragment>
-        )}
-    </Fragment>;
+      )}
+    </Fragment>
+  );
 };
 
 Dashboard.propTypes = {
-    getCurrentProfile: PropTypes.func.isRequired,
-    deleteAccount: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    profile: state.profile
+  auth: state.auth,
+  profile: state.profile
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
+  Dashboard
+);

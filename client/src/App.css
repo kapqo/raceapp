@@ -23,7 +23,7 @@ body {
   line-height: 1.6;
   background-color: #fff;
   color: #333;
-}
+  }
 
 a {
   color: var(--primary-color);
@@ -40,7 +40,7 @@ img {
 
 /* Utilities */
 .container {
-  max-width: 60%;
+  max-width: 58%;
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
@@ -332,6 +332,19 @@ button {
   background: var(--light-color);
 }
 
+.sticky {
+  display: flex;
+  position: fixed;
+  left: 4vw;
+  top: 250px;
+}
+
+.advertisement {
+  display: flex;
+  position: fixed;
+  right: 6vw;
+  top: 150px;
+}
 
 /* Navbar */
 .navbar {
@@ -343,7 +356,7 @@ button {
   z-index: 1;
   width: 100%;
   top: 0;
-  border-bottom: solid 1px #52b788;
+  border-bottom: solid 1px green;
   opacity: 0.9;
 }
 
