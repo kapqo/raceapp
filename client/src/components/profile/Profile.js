@@ -41,7 +41,7 @@ const Profile = ({
             <ProfileTop profile={profile} profileId={profile.user._id} />
             <ProfileAbout profile={profile} />
             <div className='profile-veh bg-white p-2'>
-              <h2 className='textcustom'>Vehicle</h2>
+              <h2 className='textcustomdark'>Vehicle</h2>
               {profile.vehicle.length > 0 ? (
                 <Fragment>
                   {profile.vehicle.map(vehicle => (

@@ -33,7 +33,7 @@ const ProfileVehicle = ({
   return (
     <div className='veh-grid'>
       <div>
-        <h3 className='textcustomdark'>
+        <h3 className='textcustomdarkk'>
           {brand} {model}
         </h3>
         <p>

@@ -173,15 +173,18 @@ img {
 }
 
 .bg-customlight {
-  background: var(--customlight-color);
-  color: #333;
-  border: #ccc solid 1px;
+  background: #DEE2E6;
+  color: #212529;
+  border: #6C757D solid 1px;
+  border-radius: 5px;
+
 }
 
 .bg-custom {
-  background: var(--custom-color);
-  color: #333;
-  border: #40916c solid 1px;
+  background: #ADB5BD;
+  color: #212529;
+  border: #495057 solid 1px;
+  border-radius: 5px;
 }
 
 .bg-customdark {
@@ -237,6 +240,7 @@ img {
   background: #fff;
   color: #333;
   border: #ccc solid 1px;
+  border-radius: 5px;
 }
 
 .btn:hover {
@@ -356,7 +360,7 @@ button {
   z-index: 1;
   width: 100%;
   top: 0;
-  border-bottom: solid 1px green;
+  border-bottom: solid 1px #212529;
   opacity: 0.9;
 }
 
@@ -492,8 +496,7 @@ button {
   grid-template-areas:
     'veh img';
   grid-gap: 1rem;
-  justify-content: space-between;
-}
+  justify-content: space-between;}
 
 /* Posts Page */
 .post-form .post-form-header {
@@ -535,7 +538,11 @@ button {
 }
 
 .textcustomdark {
-  color: #1b4332;
+  color: #212529;
+}
+
+.textcustomdarkk {
+  color: #495057;
 }
 
 /* Mobile Styles */
