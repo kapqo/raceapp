@@ -181,6 +181,30 @@ const Event = ({
     );
   }
 
+  const addSureFn = id => {
+    addSure(id).then(() => {
+      getEvent(match.params.id);
+    });
+  };
+
+  const addUnSureFn = id => {
+    addUnsure(id).then(() => {
+      getEvent(match.params.id);
+    });
+  };
+
+  const removeSureFn = id => {
+    removeSure(id).then(() => {
+      getEvent(match.params.id);
+    });
+  };
+
+  const removeUnsureFn = id => {
+    removeUnsure(id).then(() => {
+      getEvent(match.params.id);
+    });
+  };
+
   return loading || event === null || user === null ? (
     <Spinner />
   ) : (
@@ -246,20 +270,20 @@ const Event = ({
                 </Label>
               </Segment>
               {event.sure.find(sure => sure.user === user._id) ? (
-                <Button color='red' onClick={e => removeSure(event._id)}>
+                <Button color='red' onClick={e => removeSureFn(event._id)}>
                   Leave
                 </Button>
               ) : event.unsure.find(unsure => unsure.user === user._id) ? (
-                <Button color='red' onClick={e => removeUnsure(event._id)}>
+                <Button color='red' onClick={e => removeUnsureFn(event._id)}>
                   Leave
                 </Button>
               ) : (
                 <Button.Group>
-                  <Button color='green' onClick={e => addSure(event._id)}>
+                  <Button color='green' onClick={e => addSureFn(event._id)}>
                     I'am in!
                   </Button>
                   <Button.Or />
-                  <Button color='yellow' onClick={e => addUnsure(event._id)}>
+                  <Button color='yellow' onClick={e => addUnSureFn(event._id)}>
                     I'am interested
                   </Button>
                 </Button.Group>

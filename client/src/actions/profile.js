@@ -37,7 +37,7 @@ export const getCurrentProfile = () => async dispatch => {
 //Get current profile
 export const getCurrentFollowings = () => async dispatch => {
   try {
-    const res = await axios.get('api/profile/myFollowing');
+    const res = await axios.get('/api/profile/myFollowing');
 
     dispatch({
       type: GET_FOLLOWINGS,

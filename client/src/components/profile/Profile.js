@@ -25,9 +25,6 @@ const Profile = ({
     getCurrentFollowings();
   }, [getCurrentFollowings]);
 
-  // console.log(profile);
-  // console.log(auth);
-
   return (
     <Fragment>
       {profile === null || user === null || loading ? (
@@ -47,7 +44,12 @@ const Profile = ({
               </Link>
             )}
           <div class='profile-grid my-1'>
-            <ProfileTop profileThat={profile} profileId={profile.user._id} />
+            <ProfileTop
+              profileThat={profile}
+              profileId={profile.user._id}
+              following={following}
+              getFollowingFunction={getCurrentFollowings}
+            />
             <ProfileAbout profile={profile} />
             <div className='profile-veh bg-white p-2'>
               <h2 className='textcustomdark'>Vehicle</h2>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -8,18 +8,36 @@ const ProfileTop = ({
   followUser,
   unfollowUser,
   profileId,
+  following,
+  getFollowingFunction,
   profileThat: {
     location,
     social,
-    user: { name, avatar }
+    user: { name, avatar, _id }
   }
 }) => {
+  const result = following.filter(following => following.user === _id);
+
+  const followFn = id => {
+    followUser(id).then(() => {
+      getFollowingFunction();
+    });
+  };
+
+  const unfollowFn = id => {
+    unfollowUser(id).then(() => {
+      getFollowingFunction();
+    });
+  };
+
   return (
     <div className='profile-top bg-custom p-2'>
-      <Button.Group>
-        <Button onClick={e => followUser(profileId)}>Follow</Button>
-        <Button onClick={e => unfollowUser(profileId)}>Unfollow</Button>
-      </Button.Group>
+      {result.length > 0 ? (
+        <Button onClick={e => unfollowFn(profileId)}>Unfollow</Button>
+      ) : (
+        <Button onClick={e => followFn(profileId)}>Follow</Button>
+      )}
+
       <img className='round-img my-1' src={avatar} alt='' />
       <h1 className='large'>{name}</h1>
       <p className='lead'>{location && <span>{location}</span>}</p>

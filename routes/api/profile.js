@@ -36,8 +36,6 @@ router.get('/myFollowing', auth, async (req, res) => {
       user: req.user.id
     });
 
-    console.log(profile);
-
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' });
     }
