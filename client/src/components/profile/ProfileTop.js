@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ const ProfileTop = ({
   followUser,
   unfollowUser,
   profileId,
-  profile: {
+  profileThat: {
     location,
     social,
     user: { name, avatar }
@@ -16,8 +16,10 @@ const ProfileTop = ({
 }) => {
   return (
     <div className='profile-top bg-custom p-2'>
-      <Button onClick={e => followUser(profileId)}>Follow</Button>
-      <Button onClick={e => unfollowUser(profileId)}>Unfollow</Button>
+      <Button.Group>
+        <Button onClick={e => followUser(profileId)}>Follow</Button>
+        <Button onClick={e => unfollowUser(profileId)}>Unfollow</Button>
+      </Button.Group>
       <img className='round-img my-1' src={avatar} alt='' />
       <h1 className='large'>{name}</h1>
       <p className='lead'>{location && <span>{location}</span>}</p>
@@ -48,4 +50,11 @@ ProfileTop.propTypes = {
   unfollowUser: PropTypes.func.isRequired
 };
 
-export default connect(null, { followUser, unfollowUser })(ProfileTop);
+const mapStateToProps = state => ({
+  profile: state.profile
+});
+
+export default connect(mapStateToProps, {
+  followUser,
+  unfollowUser
+})(ProfileTop);

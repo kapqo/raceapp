@@ -27,6 +27,28 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+// GET api/profile/me
+// Get current profile followings
+// Private
+router.get('/myFollowing', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.user.id
+    });
+
+    console.log(profile);
+
+    if (!profile) {
+      return res.status(400).json({ msg: 'There is no profile for this user' });
+    }
+
+    res.json(profile.following);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // POST api/profile
 // Create or update user profile
 // Private
@@ -350,7 +372,11 @@ router.put('/follow/:id', auth, async (req, res) => {
 
     await profile.save();
 
-    res.json(profile.following);
+    const profile2 = await Profile.findOne({
+      user: req.params.id
+    }).populate('user', ['name', 'avatar']);
+
+    res.json(profile2);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
@@ -382,7 +408,11 @@ router.put('/unFollow/:id', auth, async (req, res) => {
 
     await profile.save();
 
-    res.json(profile.following);
+    const profile2 = await Profile.findOne({
+      user: req.params.id
+    }).populate('user', ['name', 'avatar']);
+
+    res.json(profile2);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');

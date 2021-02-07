@@ -6,11 +6,14 @@ import {
   GET_PROFILES,
   GET_VEHICLE,
   VEHICLE_ERROR,
-  UPDATE_FOLLOWING
+  UPDATE_FOLLOWING,
+  GET_FOLLOWINGS,
+  FOLLOWING_ERROR
 } from '../actions/types';
 
 const initialState = {
   profile: null,
+  following: [],
   profiles: [],
   loading: true,
   error: {}
@@ -28,6 +31,12 @@ export default function (state = initialState, action) {
         profile: payload,
         loading: false
       };
+    case GET_FOLLOWINGS:
+      return {
+        ...state,
+        following: payload,
+        loading: false
+      };
     case GET_PROFILES:
       return {
         ...state,
@@ -40,6 +49,13 @@ export default function (state = initialState, action) {
         error: payload,
         loading: false,
         profile: null
+      };
+    case FOLLOWING_ERROR:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+        following: null
       };
     case VEHICLE_ERROR:
       return {

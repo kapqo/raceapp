@@ -8,20 +8,29 @@ import ProfileAbout from './ProfileAbout';
 import ProfileVehicle from './ProfileVehicle.js';
 import { getProfileById } from '../../actions/profile';
 import { Icon } from 'semantic-ui-react';
+import { getCurrentFollowings } from '../../actions/profile';
 
 const Profile = ({
   getProfileById,
-  profile: { profile, loading },
-  auth,
-  match
+  profile: { profile, loading, following },
+  auth: { user, isAuthenticated },
+  match,
+  getCurrentFollowings
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
   }, [getProfileById, match.params.id]);
 
+  useEffect(() => {
+    getCurrentFollowings();
+  }, [getCurrentFollowings]);
+
+  // console.log(profile);
+  // console.log(auth);
+
   return (
     <Fragment>
-      {profile === null || auth.user === null || loading ? (
+      {profile === null || user === null || loading ? (
         <Spinner />
       ) : (
         <Fragment>
@@ -29,16 +38,16 @@ const Profile = ({
             <Icon name='reply' />
             Back To Profiles
           </Link>
-          {auth.isAuthenticated &&
-            auth.loading === false &&
-            auth.user._id === profile.user._id && (
+          {isAuthenticated &&
+            loading === false &&
+            user._id === profile.user._id && (
               <Link to='/edit-profile' className='ui grey button'>
                 <Icon name='edit' />
                 Edit Profile
               </Link>
             )}
           <div class='profile-grid my-1'>
-            <ProfileTop profile={profile} profileId={profile.user._id} />
+            <ProfileTop profileThat={profile} profileId={profile.user._id} />
             <ProfileAbout profile={profile} />
             <div className='profile-veh bg-white p-2'>
               <h2 className='textcustomdark'>Vehicle</h2>
@@ -49,7 +58,7 @@ const Profile = ({
                       key={vehicle._id}
                       vehicle={vehicle}
                       profileId={profile?.user?._id}
-                      authId={auth.user._id}
+                      authId={user._id}
                     ></ProfileVehicle>
                   ))}
                 </Fragment>
@@ -67,12 +76,17 @@ const Profile = ({
 Profile.propTypes = {
   getProfileById: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getCurrentFollowings: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
+  following: state.following
 });
 
-export default connect(mapStateToProps, { getProfileById })(Profile);
+export default connect(mapStateToProps, {
+  getProfileById,
+  getCurrentFollowings
+})(Profile);

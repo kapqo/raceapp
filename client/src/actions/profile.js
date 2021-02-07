@@ -10,7 +10,9 @@ import {
   ACCOUNT_DELETED,
   GET_VEHICLE,
   VEHICLE_ERROR,
-  UPDATE_FOLLOWING
+  UPDATE_FOLLOWING,
+  GET_FOLLOWINGS,
+  FOLLOWING_ERROR
 } from './types';
 
 //Get current profile
@@ -27,6 +29,23 @@ export const getCurrentProfile = () => async dispatch => {
 
     dispatch({
       type: PROFILE_ERROR,
+      payload: { msg: error.response.statusText, status: error.response.status }
+    });
+  }
+};
+
+//Get current profile
+export const getCurrentFollowings = () => async dispatch => {
+  try {
+    const res = await axios.get('api/profile/myFollowing');
+
+    dispatch({
+      type: GET_FOLLOWINGS,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: FOLLOWING_ERROR,
       payload: { msg: error.response.statusText, status: error.response.status }
     });
   }
@@ -237,7 +256,6 @@ export const deleteAccount = () => async dispatch => {
 export const followUser = id => async dispatch => {
   try {
     const res = await axios.put(`/api/profile/follow/${id}`);
-
     dispatch({
       type: UPDATE_PROFILE,
       payload: res.data
@@ -256,11 +274,8 @@ export const unfollowUser = id => async dispatch => {
     const res = await axios.put(`/api/profile/unFollow/${id}`);
 
     dispatch({
-      type: UPDATE_FOLLOWING,
-      payload: {
-        id,
-        following: res.data
-      }
+      type: UPDATE_PROFILE,
+      payload: res.data
     });
   } catch (error) {
     dispatch({

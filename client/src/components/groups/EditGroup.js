@@ -23,19 +23,25 @@ const EditGroup = ({
   });
 
   useEffect(() => {
-    getGroup(match.params.id).then(() => {
-      console.log({ ...group });
-      setFormData({
-        name: loading || !group.name ? '' : group.name,
-        avatar: loading || !group.avatar ? '' : group.avatar,
-        description: loading || !group.description ? '' : group.description,
-        user: loading || !group.user ? '' : group.user,
-        status: loading || !group.status ? '' : group.status,
-        admin: loading || !group.admin ? '' : group.admin
-        //console.log(group);
-      });
+    getGroup(match.params.id);
+  }, [getGroup, match.params.id]);
+
+  const setData = () => {
+    setFormData({
+      name: loading || !group.name ? '' : group.name,
+      avatar: loading || !group.avatar ? '' : group.avatar,
+      description: loading || !group.description ? '' : group.description,
+      user: loading || !group.user ? '' : group.user,
+      status: loading || !group.status ? '' : group.status,
+      admin: loading || !group.admin ? '' : group.admin
     });
-  }, [loading, getGroup, match.params.id]);
+  };
+
+  useEffect(() => {
+    if (group !== null) setData();
+  }, [group]);
+
+  console.log(group);
 
   const { name, avatar, description, status } = formData;
 
