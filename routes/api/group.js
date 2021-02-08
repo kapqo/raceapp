@@ -17,9 +17,17 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, avatar, description, status, admin, adminname, adminavatar } = req.body;
+    const {
+      name,
+      avatar,
+      description,
+      status,
+      admin,
+      adminname,
+      adminavatar
+    } = req.body;
 
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.id).select('-password');
 
     //Build group object
     const groupFields = {};
@@ -37,6 +45,9 @@ router.post(
 
       //Create
       group = new Group(groupFields);
+
+      //Add admin to a member
+      group.members.unshift({ user: req.user.id });
 
       await group.save();
       res.json(group);
