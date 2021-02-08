@@ -6,7 +6,7 @@ import Spinner from '../layout/Spinner';
 import { deleteAccount, getCurrentProfile } from '../../actions/profile';
 import Vehicle from './Vehicle';
 import DashboardActions from './DashboardActions';
-import { Button, Icon, Header, Container } from 'semantic-ui-react';
+import { Button, Icon, Header, Container, Segment } from 'semantic-ui-react';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -33,7 +33,11 @@ const Dashboard = ({
       {profile !== null ? (
         <Fragment>
           <DashboardActions />
-          <Vehicle vehicle={profile.vehicle} />
+          {profile.vehicle.length > 0 ? (
+            <Vehicle vehicle={profile.vehicle} />
+          ) : (
+            <Segment textAlign='center'>No vehicle added</Segment>
+          )}
 
           <div className='my-2'>
             <Button

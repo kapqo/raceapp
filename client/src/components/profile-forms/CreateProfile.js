@@ -2,22 +2,36 @@ import React, { Fragment, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { storage } from '../../firebase/firebase';
 import { createProfile } from '../../actions/profile';
-import { Button, Icon, Header, Form } from 'semantic-ui-react';
+import { Button, Icon, Header, Form, Grid, Progress } from 'semantic-ui-react';
 
 const CreateProfile = ({ createProfile, history }) => {
   const [formData, setFormData] = useState({
     location: '',
     bio: '',
     interests: '',
+    avatar: '',
     instagram: '',
     facebook: '',
     youtube: ''
   });
 
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState('');
+  const [progress, setProgress] = useState(0);
+
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
 
-  const { location, bio, interests, instagram, facebook, youtube } = formData;
+  const {
+    location,
+    bio,
+    interests,
+    avatar,
+    instagram,
+    facebook,
+    youtube
+  } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,6 +39,39 @@ const CreateProfile = ({ createProfile, history }) => {
   const onSubmit = e => {
     e.preventDefault();
     createProfile(formData, history);
+  };
+
+  const handlePhoto = e => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = e => {
+    e.preventDefault();
+    const uploadTask = storage.ref(`profileavatars/${image.name}`).put(image);
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progress);
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref('profileavatars')
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            setUrl(url);
+            setFormData({ ...formData, avatar: url });
+          });
+      }
+    );
   };
 
   return (
@@ -74,6 +121,35 @@ const CreateProfile = ({ createProfile, history }) => {
           <small className='form-text'>
             Please use comma after each interests (eg. Honda, Vag, Stance, JDM)
           </small>
+        </Form.Field>
+        <Form.Field>
+          <label>Profile's avatar</label>
+
+          <Grid columns='equal'>
+            <Grid.Row>
+              <Grid.Column>
+                <input
+                  type='file'
+                  accept='.png, .jpg, .jpeg'
+                  onChange={handlePhoto}
+                />
+                <small className='form-text'>Optional</small>
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Button type='submit' onClick={handleUpload}>
+                  Upload
+                </Button>
+              </Grid.Column>
+              <Grid.Column stretched>
+                <Progress
+                  percent={progress}
+                  active
+                  autoSuccess
+                  size='large'
+                ></Progress>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Form.Field>
 
         <div className='my-2'>

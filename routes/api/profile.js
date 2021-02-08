@@ -117,6 +117,15 @@ router.post(
 
       //Create
       profile = new Profile(profileFields);
+      user = await User.findOneAndUpdate(
+        { _id: req.user.id },
+        {
+          $set: {
+            avatar: userFields.avatar
+          }
+        },
+        { new: true }
+      );
 
       await profile.save();
       res.json(profile);

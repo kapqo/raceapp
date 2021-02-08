@@ -216,13 +216,15 @@ const Event = ({
         <Grid columns={'equal'} divided>
           <Grid.Row stretched>
             <Grid.Column>
-              <Segment>Title: {event.title}</Segment>
+              <Segment>
+                <b>Title:</b> {event.title}
+              </Segment>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row stretched>
             <Grid.Column width={5}>
               <Segment>
-                Organizer:{' '}
+                <b>Organizer:</b>{' '}
                 <Link to={`/profile/${event.organizer}`}>
                   <Label image>
                     <img src={event.avatar} />
@@ -245,13 +247,16 @@ const Event = ({
                 </Button.Group>
               ) : null}
               <Segment>
-                Date: <Moment format='YYYY/MM/DD'>{event.date}</Moment>
+                <b>Date:</b> <Moment format='YYYY/MM/DD'>{event.date}</Moment>
                 {event.time.length > 0 ? (
-                  <div>Start:{' ' + event.time}</div>
+                  <div>
+                    <b>Start:</b>
+                    {' ' + event.time}
+                  </div>
                 ) : null}
               </Segment>
               <Segment textAlign='center'>
-                Location:{' '}
+                <b>Location:</b>{' '}
                 <Button as='div' floated='right' labelPosition='left'>
                   <Label as='a' basic pointing='right'>
                     {event.location}
@@ -290,7 +295,7 @@ const Event = ({
               )}
             </Grid.Column>
             <Grid.Column>
-              <Segment>Description: {event.description}</Segment>
+              <Segment>{event.description}</Segment>
             </Grid.Column>
           </Grid.Row>
           <Container>

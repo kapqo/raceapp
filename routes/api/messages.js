@@ -14,9 +14,9 @@ router.get('/threads', auth, async (req, res) => {
     let threads = await Thread.find({ user1: req.user.id });
     threads = [...threads, Thread.find({ user2: req.user.id })];
     res.json({ threads });
-  } catch (e) {
-    console.error(e.message);
-    res.status(400).send('Server Error');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
   }
 });
 
@@ -41,9 +41,9 @@ router.post('/get_thread', auth, async (req, res) => {
     }
     const messages = await Message.find({ threadId: responseThread._id });
     res.json({ thread: responseThread, messages });
-  } catch (e) {
-    console.error(e.message);
-    res.status(400).send('Server Error');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
   }
 });
 
@@ -65,9 +65,9 @@ router.post('/send/:threadId', auth, async (req, res) => {
       await message.save();
       res.status(201).send({ message });
     }
-  } catch (e) {
-    console.error(e.message);
-    res.status(400).send('Server Error');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
   }
 });
 
