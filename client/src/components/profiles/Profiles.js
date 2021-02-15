@@ -24,7 +24,7 @@ const Profile = ({ getProfiles, profile: { profiles, loading } }) => {
 
   let names = profiles.filter(profile =>
     profile.user.name.toLowerCase().includes(inp.toLowerCase())
-  );
+  ).slice(indexOfFirstUser, indexOfLastUser);
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
@@ -55,7 +55,7 @@ const Profile = ({ getProfiles, profile: { profiles, loading } }) => {
           </Header>
           <Card.Group itemsPerRow='4'>
             {profiles.length > 0 ? (
-              currentUsers.map(profile => (
+              names.map(profile => (
                 <ProfileItem key={profile._id} profile={profile} />
               ))
             ) : (

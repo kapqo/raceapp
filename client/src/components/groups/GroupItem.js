@@ -107,7 +107,7 @@ const GroupItem = ({
                       </Segment>
                     )}
                   </Grid.Column>
-                  <Grid.Column>
+                  <Grid.Column width={8}>
                     <Segment vertical>
                       <Label color={'green'}>Admin:</Label>
                       <Link to={`/profile/${admin}`}>
@@ -120,8 +120,7 @@ const GroupItem = ({
 
                     <Segment vertical>
                       <Label>Description:</Label>
-                      {' ' + description}
-                      <br />
+                      <label>{' ' + description}</label>
                     </Segment>
                     <Segment vertical>
                       {members.find(members => members.user === user._id) ? (
