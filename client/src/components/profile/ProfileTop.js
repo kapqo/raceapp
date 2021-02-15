@@ -10,6 +10,7 @@ const ProfileTop = ({
   profileId,
   following,
   getFollowingFunction,
+  userId,
   profileThat: {
     location,
     social,
@@ -32,10 +33,14 @@ const ProfileTop = ({
 
   return (
     <div className='profile-top bg-custom p-2'>
-      {result.length > 0 ? (
-        <Button onClick={e => unfollowFn(profileId)}>Unfollow</Button>
-      ) : (
-        <Button onClick={e => followFn(profileId)}>Follow</Button>
+      {userId !== profileId && (
+        <div>
+          {result.length > 0 ? (
+            <Button onClick={e => unfollowFn(profileId)}>Unfollow</Button>
+          ) : (
+            <Button onClick={e => followFn(profileId)}>Follow</Button>
+          )}
+        </div>
       )}
 
       <img className='round-img my-1' src={avatar} alt='' />

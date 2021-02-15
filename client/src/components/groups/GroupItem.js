@@ -17,7 +17,8 @@ import {
   Modal,
   Button,
   Grid,
-  Comment
+  Comment,
+  HeaderContent
 } from 'semantic-ui-react';
 import { deleteGroup, addMember, removeMember } from '../../actions/group';
 
@@ -155,6 +156,7 @@ const GroupItem = ({
                         </Segment>
                       ) : (
                         <Segment>
+                          <Header>Group wall</Header>
                           {members.find(
                             members => members.user === user._id
                           ) ? (

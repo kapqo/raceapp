@@ -49,6 +49,7 @@ const Profile = ({
               profileId={profile.user._id}
               following={following}
               getFollowingFunction={getCurrentFollowings}
+              userId={user._id}
             />
             <ProfileAbout profile={profile} />
             <div className='profile-veh bg-white p-2'>
