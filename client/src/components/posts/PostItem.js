@@ -58,12 +58,13 @@ const PostItem = ({
                 </Button>
               </Comment.Action>
               <Comment.Action>
-                {!auth.loading && user === auth.user._id && (
+                {(!auth.loading && user === auth.user._id) ||
+                auth.user.admin ? (
                   <Button color='red' inverted onClick={e => deletePost(_id)}>
                     <Icon name='trash alternate' />
                     Delete post
                   </Button>
-                )}
+                ) : null}
               </Comment.Action>
             </Fragment>
           )}
