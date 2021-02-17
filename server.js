@@ -18,6 +18,7 @@ app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/posts', require('./routes/api/posts'));
 app.use('/api/group', require('./routes/api/group'));
 app.use('/api/events', require('./routes/api/events'));
+app.use('/api/chats', require('./routes/api/chats'));
 
 const PORT = process.env.PORT || 5000;
 

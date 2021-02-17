@@ -23,6 +23,7 @@ import AddEvent from './components/events/AddEvent';
 import EditEvent from './components/events/EditEvent';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
+import Inbox from './components/inbox/Inbox';
 import PrivateRoute from './components/routing/PrivateRoute';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -126,6 +127,11 @@ const App = () => {
                   exact
                   path='/edit-event/:id'
                   component={EditEvent}
+                ></PrivateRoute>
+                <PrivateRoute
+                  exact
+                  path='/inbox'
+                  component={Inbox}
                 ></PrivateRoute>
               </Switch>
             </section>

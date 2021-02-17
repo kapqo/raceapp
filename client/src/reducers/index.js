@@ -5,6 +5,7 @@ import profile from './profile';
 import post from './post';
 import group from './group';
 import event from './event';
+import chat from './chat';
 
 export default combineReducers({
   alert,
@@ -12,5 +13,6 @@ export default combineReducers({
   profile,
   post,
   group,
-  event
+  event,
+  chat
 });

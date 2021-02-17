@@ -8,6 +8,7 @@ import {
   banUser,
   unbanUser
 } from '../../actions/profile';
+import { addChat } from '../../actions/chat';
 
 const ProfileTop = ({
   followUser,
@@ -19,6 +20,7 @@ const ProfileTop = ({
   userAdmin,
   banUser,
   unbanUser,
+  addChat,
   profileThat: {
     location,
     social,
@@ -38,8 +40,6 @@ const ProfileTop = ({
       getFollowingFunction();
     });
   };
-
-  console.log(banned === true);
 
   return (
     <div className='profile-top bg-custom p-2'>
@@ -65,6 +65,7 @@ const ProfileTop = ({
           )}
         </div>
       )}
+      <Button onClick={e => addChat(profileId)}>Create chat with user</Button>
 
       <img className='round-img my-1' src={avatar} alt='' />
       <h1 className='large'>{name}</h1>
@@ -95,7 +96,8 @@ ProfileTop.propTypes = {
   followUser: PropTypes.func.isRequired,
   unfollowUser: PropTypes.func.isRequired,
   banUser: PropTypes.func.isRequired,
-  unbanUser: PropTypes.func.isRequired
+  unbanUser: PropTypes.func.isRequired,
+  addChat: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -106,5 +108,6 @@ export default connect(mapStateToProps, {
   followUser,
   unfollowUser,
   banUser,
-  unbanUser
+  unbanUser,
+  addChat
 })(ProfileTop);

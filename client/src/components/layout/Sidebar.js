@@ -28,6 +28,12 @@ const Sidebar = ({ auth: { user }, logout }) => {
             <span className='hide-sm'>Users</span>
           </Button>
         </Link>
+        <Link to='/inbox'>
+          <Button textAlign='center' size='huge' icon labelPosition='left'>
+            <Icon name='chat' />
+            <span className='hide-sm'>Inbox</span>
+          </Button>
+        </Link>
         <Link to='/groups'>
           <Button textAlign='center' size='huge' icon labelPosition='left'>
             <Icon name='car' />
