@@ -41,3 +41,4 @@ export const CLEAR_EVENT = 'CLEAR_EVENT';
 export const UPDATE_SURE = 'UPDATE_SURE';
 export const UPDATE_UNSURE = 'UPDATE_UNSURE';
 export const UPDATE_FOLLOWING = 'UPDATE_FOLLOWING';
+export const UPDATE_BAN = 'UPDATE_BAN';

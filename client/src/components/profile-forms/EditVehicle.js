@@ -3,8 +3,17 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import { connect } from 'react-redux';
+import { storage } from '../../firebase/firebase';
 import { getVehicleById, editVehicle } from '../../actions/profile';
-import { Button, Icon, Header, Form, Input } from 'semantic-ui-react';
+import {
+  Button,
+  Icon,
+  Header,
+  Form,
+  Input,
+  Grid,
+  Progress
+} from 'semantic-ui-react';
 
 const EditVehicle = ({
   profile: { profile, loading },
@@ -23,6 +32,10 @@ const EditVehicle = ({
     description: '',
     photo: ''
   });
+
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState('');
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     getVehicleById(match.params.id);
@@ -71,6 +84,39 @@ const EditVehicle = ({
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handlePhoto = e => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = e => {
+    e.preventDefault();
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progress);
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref('images')
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            setUrl(url);
+            setFormData({ ...formData, photo: url });
+          });
+      }
+    );
+  };
 
   return (
     <Fragment>
@@ -173,6 +219,35 @@ const EditVehicle = ({
                 onChange={e => onChange(e)}
               />
             </div>
+            <Form.Field>
+              <label>Vehicle photo</label>
+
+              <Grid columns='equal'>
+                <Grid.Row>
+                  <Grid.Column>
+                    <input
+                      type='file'
+                      accept='.png, .jpg, .jpeg'
+                      onChange={handlePhoto}
+                    />
+                    <small className='form-text'>Optional</small>
+                  </Grid.Column>
+                  <Grid.Column width={2}>
+                    <Button type='submit' onClick={handleUpload}>
+                      Upload
+                    </Button>
+                  </Grid.Column>
+                  <Grid.Column stretched>
+                    <Progress
+                      percent={progress}
+                      active
+                      autoSuccess
+                      size='large'
+                    ></Progress>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Form.Field>
             <Button type='submit' color='green'>
               Upload
             </Button>

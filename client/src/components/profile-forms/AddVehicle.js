@@ -150,7 +150,7 @@ const AddVehicle = ({ addVehicle, history }) => {
           ></textarea>
         </Form.Field>
         <Form.Field>
-          <label>Profile's avatar</label>
+          <label>Vehicle photo</label>
 
           <Grid columns='equal'>
             <Grid.Row>

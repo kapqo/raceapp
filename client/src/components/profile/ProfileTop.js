@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { followUser, unfollowUser } from '../../actions/profile';
+import {
+  followUser,
+  unfollowUser,
+  banUser,
+  unbanUser
+} from '../../actions/profile';
 
 const ProfileTop = ({
   followUser,
@@ -11,10 +16,13 @@ const ProfileTop = ({
   following,
   getFollowingFunction,
   userId,
+  userAdmin,
+  banUser,
+  unbanUser,
   profileThat: {
     location,
     social,
-    user: { name, avatar, _id }
+    user: { name, avatar, _id, banned }
   }
 }) => {
   const result = following.filter(following => following.user === _id);
@@ -31,6 +39,8 @@ const ProfileTop = ({
     });
   };
 
+  console.log(banned === true);
+
   return (
     <div className='profile-top bg-custom p-2'>
       {userId !== profileId && (
@@ -39,6 +49,19 @@ const ProfileTop = ({
             <Button onClick={e => unfollowFn(profileId)}>Unfollow</Button>
           ) : (
             <Button onClick={e => followFn(profileId)}>Follow</Button>
+          )}
+        </div>
+      )}
+      {userAdmin && (
+        <div className='my-1'>
+          {banned ? (
+            <Button positive onClick={e => unbanUser(profileId)}>
+              Unban User
+            </Button>
+          ) : (
+            <Button negative onClick={e => banUser(profileId)}>
+              Ban User
+            </Button>
           )}
         </div>
       )}
@@ -70,7 +93,9 @@ const ProfileTop = ({
 ProfileTop.propTypes = {
   profile: PropTypes.object.isRequired,
   followUser: PropTypes.func.isRequired,
-  unfollowUser: PropTypes.func.isRequired
+  unfollowUser: PropTypes.func.isRequired,
+  banUser: PropTypes.func.isRequired,
+  unbanUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -79,5 +104,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   followUser,
-  unfollowUser
+  unfollowUser,
+  banUser,
+  unbanUser
 })(ProfileTop);

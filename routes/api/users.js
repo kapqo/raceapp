@@ -81,4 +81,30 @@ router.post(
   }
 );
 
+router.put('/ban/:id', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    user.banned = true;
+
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+router.put('/unban/:id', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    user.banned = false;
+
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;

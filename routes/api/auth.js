@@ -55,6 +55,12 @@ router.post(
           .json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
 
+      if (user.banned) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Your account has been banned' }] });
+      }
+
       const payload = {
         user: {
           id: user.id

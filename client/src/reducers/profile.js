@@ -8,7 +8,8 @@ import {
   VEHICLE_ERROR,
   UPDATE_FOLLOWING,
   GET_FOLLOWINGS,
-  FOLLOWING_ERROR
+  FOLLOWING_ERROR,
+  UPDATE_BAN
 } from '../actions/types';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   following: [],
   profiles: [],
   loading: true,
+  user: null,
   error: {}
 };
 
@@ -77,6 +79,16 @@ export default function (state = initialState, action) {
             ? { ...profile, following: payload.following }
             : profile
         ),
+        loading: false
+      };
+    case UPDATE_BAN:
+      return {
+        ...state,
+        user: { ...state.user, banned: payload.banned },
+        profile: {
+          ...state.profile,
+          user: { ...state.profile.user, banned: payload.banned }
+        },
         loading: false
       };
     default:

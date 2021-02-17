@@ -10,7 +10,7 @@ import {
   ACCOUNT_DELETED,
   GET_VEHICLE,
   VEHICLE_ERROR,
-  UPDATE_FOLLOWING,
+  UPDATE_BAN,
   GET_FOLLOWINGS,
   FOLLOWING_ERROR
 } from './types';
@@ -276,6 +276,38 @@ export const unfollowUser = id => async dispatch => {
     dispatch({
       type: UPDATE_PROFILE,
       payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: error.response.statusText, status: error.response.status }
+    });
+  }
+};
+
+//Ban user
+export const banUser = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/users/ban/${id}`);
+    dispatch({
+      type: UPDATE_BAN,
+      payload: { id, banned: res.data }
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: error.response.statusText, status: error.response.status }
+    });
+  }
+};
+
+//Unban User
+export const unbanUser = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/users/unban/${id}`);
+    dispatch({
+      type: UPDATE_BAN,
+      payload: { id, banned: res.data }
     });
   } catch (error) {
     dispatch({
