@@ -29,6 +29,8 @@ const ProfileTop = ({
 }) => {
   const result = following.filter(following => following.user === _id);
 
+  const user2 = profileId;
+
   const followFn = id => {
     followUser(id).then(() => {
       getFollowingFunction();
@@ -65,7 +67,7 @@ const ProfileTop = ({
           )}
         </div>
       )}
-      <Button onClick={e => addChat(profileId)}>Create chat with user</Button>
+      <Button onClick={e => addChat({ user2 })}>Create chat with user</Button>
 
       <img className='round-img my-1' src={avatar} alt='' />
       <h1 className='large'>{name}</h1>

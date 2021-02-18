@@ -43,7 +43,7 @@ const Profile = ({
                 Edit Profile
               </Link>
             )}
-          {user.admin || profile.user.banned === false ? (
+          {user.admin || !profile.user.banned ? (
             <div class='profile-grid my-1'>
               <ProfileTop
                 profileThat={profile}

@@ -18,6 +18,18 @@ router.post('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
 
+    let chats = await Chat.find({ user1: user, user2: req.body.user2 });
+    chats = [
+      ...chats,
+      ...(await Chat.find({ user1: req.body.user2, user2: user }))
+    ];
+
+    if (chats.length > 0) {
+      return res
+        .status(400)
+        .json({ msg: 'You alredy created chat with this user' });
+    }
+
     const newChat = new Chat({
       user1: user,
       user2: req.body.user2
@@ -46,14 +58,18 @@ router.get('/', auth, async (req, res) => {
 });
 
 // GET api/chats/myChats
-// Get all chats
+// Get my chats
 // Private
 router.get('/myChats', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
 
-    const chats1 = await Chat.find({ user1: user });
-    const chats2 = await Chat.find({ user2: user });
+    const chats1 = await Chat.find({ user1: user })
+      .populate('user1')
+      .populate('user2');
+    const chats2 = await Chat.find({ user2: user })
+      .populate('user1')
+      .populate('user2');
 
     const chats = [...chats1, ...chats2];
 
@@ -71,13 +87,18 @@ router.get('/:id', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
 
-    let chats = await Chat.find({ user1: user, user2: req.params.id });
+    let chats = await Chat.find({ user1: user, user2: req.params.id })
+      .populate('user1')
+      .populate('user2');
+
     chats = [
       ...chats,
-      ...(await Chat.find({ user1: req.params.id, user2: user }))
+      ...(await Chat.find({ user1: req.params.id, user2: user })
+        .populate('user1')
+        .populate('user2'))
     ];
 
-    res.json(chats);
+    res.json(chats[0]);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');

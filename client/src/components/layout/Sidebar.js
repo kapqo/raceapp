@@ -16,6 +16,14 @@ const Sidebar = ({ auth: { user }, logout }) => {
             <span className='hide-sm'>Dashboard</span>
           </Button>
         </Link>
+        {user !== null ? (
+          <Link to={`/profile/${user._id}`}>
+            <Button textAlign='center' size='huge' icon labelPosition='left'>
+              <Icon name='user circle' />
+              <span className='hide-sm'>My Profile</span>
+            </Button>
+          </Link>
+        ) : null}
         <Link to='/posts'>
           <Button textAlign='center' size='huge' icon labelPosition='left'>
             <Icon name='feed' />
@@ -46,14 +54,6 @@ const Sidebar = ({ auth: { user }, logout }) => {
             <span className='hide-sm'>Events</span>
           </Button>
         </Link>
-        {user !== null ? (
-          <Link to={`/profile/${user._id}`}>
-            <Button textAlign='center' size='huge' icon labelPosition='left'>
-              <Icon name='user circle' />
-              <span className='hide-sm'>My Profile</span>
-            </Button>
-          </Link>
-        ) : null}
 
         <Button
           textAlign='center'
