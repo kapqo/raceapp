@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
-import { Icon, Label } from 'semantic-ui-react';
+import { Image, Label } from 'semantic-ui-react';
+import logo from './logoWhite.png';
 
 const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
   const authLinks = (
@@ -31,11 +32,14 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
 
   return (
     <nav className='navbar bg-dark'>
-      <h1>
-        <Link to='/'>
-          <i className='fas fa-car'></i> Raceapp
-        </Link>
-      </h1>
+      <img
+        src={logo}
+        style={{
+          height: '40px',
+          width: '220px'
+        }}
+      />
+
       {!loading && (
         <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
       )}

@@ -48,7 +48,7 @@ const Profile = ({
               <ProfileTop
                 profileThat={profile}
                 profileId={profile.user._id}
-                following={following}
+                followingg={following}
                 getFollowingFunction={getCurrentFollowings}
                 userId={user._id}
                 userAdmin={user.admin}

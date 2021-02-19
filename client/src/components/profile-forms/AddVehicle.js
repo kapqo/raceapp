@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { addVehicle } from '../../actions/profile';
 import { storage } from '../../firebase/firebase';
 import { Button, Progress, Form, Icon, Header, Grid } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const AddVehicle = ({ addVehicle, history }) => {
   const [formData, setFormData] = useState({
@@ -178,12 +179,18 @@ const AddVehicle = ({ addVehicle, history }) => {
             </Grid.Row>
           </Grid>
         </Form.Field>
-        <button type='submit' class='ui green button'>
-          Add a vehicle
-        </button>
-        <a class='ui yellow button' href='dashboard.html'>
-          Go Back
-        </a>
+        {progress === 100 || progress === 0 ? (
+          <button type='submit' class='ui green button'>
+            Add a vehicle
+          </button>
+        ) : (
+          <button disabled type='submit' class='ui green button'>
+            Add a vehicle
+          </button>
+        )}
+        <Link to='dashboard.html'>
+          <Button color='yellow'>Go Back</Button>
+        </Link>
       </Form>
     </Fragment>
   );

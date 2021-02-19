@@ -67,3 +67,26 @@ export const getChat = id => async dispatch => {
     });
   }
 };
+
+//Send message
+export const sendMessage = (id, formData) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
+  try {
+    const res = await axios.post(`/api/chats/message/${id}`, formData, config);
+
+    dispatch({
+      type: ADD_MESSAGE,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: CHAT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
