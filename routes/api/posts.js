@@ -27,7 +27,8 @@ router.post(
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
-        type: req.body.type
+        type: req.body.type,
+        photo: req.body.photo
       });
 
       const post = await newPost.save();
@@ -180,7 +181,8 @@ router.post(
         text: req.body.text,
         name: user.name,
         avatar: user.avatar,
-        user: req.user.id
+        user: req.user.id,
+        photo: req.body.photo
       };
 
       post.comments.unshift(newComment);

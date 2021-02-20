@@ -646,3 +646,8 @@ button {
   display: flex;
   flex-direction: column-reverse;
 }
+
+.smallspan{
+  font-size: x-small;
+  font-weight: bolder;
+}
