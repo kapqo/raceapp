@@ -208,17 +208,6 @@ const EditVehicle = ({
                 onChange={e => onChange(e)}
               ></textarea>
             </Form.Field>
-            <div class='form-group'>
-              <Input
-                type='text'
-                error
-                disabled='true'
-                placeholder='Photo'
-                name='photo'
-                value={photo}
-                onChange={e => onChange(e)}
-              />
-            </div>
             <Form.Field>
               <label>Vehicle photo</label>
 
@@ -248,9 +237,16 @@ const EditVehicle = ({
                 </Grid.Row>
               </Grid>
             </Form.Field>
-            <Button type='submit' color='green'>
-              Upload
-            </Button>
+            {progress === 100 || progress === 0 ? (
+              <Button type='submit' color='green'>
+                Save
+              </Button>
+            ) : (
+              <Button type='submit' disabled color='green'>
+                Save
+              </Button>
+            )}
+
             <a class='ui yellow button' href='dashboard.html'>
               Go Back
             </a>

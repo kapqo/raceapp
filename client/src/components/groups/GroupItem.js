@@ -7,6 +7,7 @@ import PostForm from '../posts/PostForm';
 import Spinner from '../layout/Spinner';
 import { getPosts } from '../../actions/post';
 import { getProfileById } from '../../actions/profile';
+import { addNotification } from '../../actions/notification';
 import {
   Card,
   Label,
@@ -18,7 +19,7 @@ import {
   Button,
   Grid,
   Comment,
-  HeaderContent
+  Dropdown
 } from 'semantic-ui-react';
 import { deleteGroup, addMember, removeMember } from '../../actions/group';
 
@@ -27,6 +28,7 @@ const GroupItem = ({
   removeMember,
   deleteGroup,
   getProfileById,
+  addNotification,
   auth: { user },
   profile: { profile, loading },
   group: {
@@ -52,12 +54,28 @@ const GroupItem = ({
     getPosts();
   }, [getPosts]);
 
+  const memberOption = members.map(member => ({
+    key: member._id,
+    text: member.name,
+    image: { avatar: true, src: member.avatar },
+    value: member.user
+  }));
+
   //Show only posts of this group
   const result = posts.filter(post => post.type === _id);
 
   //const resultM = members.filter(group => group.members === user._id )
 
   const [open, setOpen] = React.useState(false);
+
+  const addMemberFn = id => {
+    addMember(id).then(() => {
+      addNotification({
+        text: `joined a group called ${name}, check our groups`,
+        link: 'http://localhost:3000/groups'
+      });
+    });
+  };
 
   return loading && profile === null ? (
     <Spinner />
@@ -124,19 +142,40 @@ const GroupItem = ({
                       <label>{' ' + description}</label>
                     </Segment>
                     <Segment vertical>
+                      <Dropdown
+                        button
+                        floating
+                        labeled
+                        className='icon'
+                        icon='search'
+                        text={`Members: ${members.length}`}
+                        options={memberOption}
+                      >
+                        <Dropdown.Menu>
+                          {memberOption.map(option => (
+                            <Link to={`/profile/${option.value}`}>
+                              <div className='m-1'>
+                                <Dropdown.Item key={option.value} {...option} />
+                              </div>
+                            </Link>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
                       {members.find(members => members.user === user._id) ? (
                         <Button
                           onClick={e => removeMember(_id)}
                           type='button'
                           color='red'
+                          floated='right'
                         >
                           Leave group
                         </Button>
                       ) : (
                         <Button
-                          onClick={e => addMember(_id)}
+                          onClick={e => addMemberFn(_id)}
                           type='button'
                           color='olive'
+                          floated='right'
                         >
                           Join in
                         </Button>
@@ -208,7 +247,8 @@ GroupItem.propTypes = {
   deleteGroup: PropTypes.func.isRequired,
   addMember: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  removeMember: PropTypes.func.isRequired
+  removeMember: PropTypes.func.isRequired,
+  addNotification: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -222,5 +262,6 @@ export default connect(mapStateToProps, {
   getPosts,
   getProfileById,
   deleteGroup,
-  removeMember
+  removeMember,
+  addNotification
 })(GroupItem);

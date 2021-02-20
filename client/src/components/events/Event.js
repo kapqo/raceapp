@@ -15,6 +15,7 @@ import {
   removeUnsure,
   deleteEvent
 } from '../../actions/event';
+import { addNotification } from '../../actions/notification';
 import {
   Container,
   Grid,
@@ -24,7 +25,8 @@ import {
   Button,
   Modal,
   Comment,
-  Header
+  Header,
+  Dropdown
 } from 'semantic-ui-react';
 import Geocode from 'react-geocode';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
@@ -38,6 +40,7 @@ const Event = ({
   removeSure,
   removeUnsure,
   deleteEvent,
+  addNotification,
   event: { event, loading },
   auth: { user },
   post: { posts },
@@ -185,12 +188,20 @@ const Event = ({
   const addSureFn = id => {
     addSure(id).then(() => {
       getEvent(match.params.id);
+      addNotification({
+        text: `is attending an event, check`,
+        link: window.location.href
+      });
     });
   };
 
   const addUnSureFn = id => {
     addUnsure(id).then(() => {
       getEvent(match.params.id);
+      addNotification({
+        text: `is interested in the event, check`,
+        link: window.location.href
+      });
     });
   };
 
@@ -205,6 +216,20 @@ const Event = ({
       getEvent(match.params.id);
     });
   };
+
+  const sureOption = event?.sure.map(sure => ({
+    key: sure._id,
+    text: sure.name,
+    image: { avatar: true, src: sure.avatar },
+    value: sure.user
+  }));
+
+  const unsureOption = event?.unsure.map(unsure => ({
+    key: unsure._id,
+    text: unsure.name,
+    image: { avatar: true, src: unsure.avatar },
+    value: unsure.user
+  }));
 
   return loading || event === null || user === null ? (
     <Spinner />
@@ -223,7 +248,7 @@ const Event = ({
             </Grid.Column>
           </Grid.Row>
           <Grid.Row stretched>
-            <Grid.Column width={5}>
+            <Grid.Column width={6}>
               <Segment>
                 <b>Organizer:</b>{' '}
                 <Link to={`/profile/${event.organizer}`}>
@@ -265,7 +290,7 @@ const Event = ({
                   <Search moveTo={moveTo} />
                 </Button>
               </Segment>
-              <Segment textAlign='center'>
+              {/* <Segment textAlign='center'>
                 <Label>
                   <Icon name='checkmark' color='green' />
                   Attending:{'  ' + event.sure.length}
@@ -274,6 +299,46 @@ const Event = ({
                   <Icon name='question' color='yellow' />
                   Interested:{'  ' + event.unsure.length}
                 </Label>
+              </Segment> */}
+              <Segment textAlign='center'>
+                <Dropdown
+                  button
+                  floating
+                  labeled
+                  className='icon'
+                  icon='checkmark'
+                  text={`Sure: ${event.sure.length}`}
+                  options={sureOption}
+                >
+                  <Dropdown.Menu>
+                    {sureOption.map(option => (
+                      <Link to={`/profile/${option.value}`}>
+                        <div className='m-1'>
+                          <Dropdown.Item key={option.value} {...option} />
+                        </div>
+                      </Link>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Dropdown
+                  button
+                  floating
+                  labeled
+                  className='icon'
+                  icon='question'
+                  text={`Unsure: ${event.unsure.length}`}
+                  options={unsureOption}
+                >
+                  <Dropdown.Menu>
+                    {unsureOption.map(option => (
+                      <Link to={`/profile/${option.value}`}>
+                        <div className='m-1'>
+                          <Dropdown.Item key={option.value} {...option} />
+                        </div>
+                      </Link>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
               </Segment>
               {event.sure.find(sure => sure.user === user._id) ? (
                 <Button color='red' onClick={e => removeSureFn(event._id)}>
@@ -324,7 +389,8 @@ Event.propTypes = {
   auth: PropTypes.object.isRequired,
   removeUnsure: PropTypes.func.isRequired,
   removeSure: PropTypes.func.isRequired,
-  deleteEvent: PropTypes.func.isRequired
+  deleteEvent: PropTypes.func.isRequired,
+  addNotification: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -340,5 +406,6 @@ export default connect(mapStateToProps, {
   addUnsure,
   removeSure,
   removeUnsure,
-  deleteEvent
+  deleteEvent,
+  addNotification
 })(Event);

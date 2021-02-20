@@ -117,6 +117,7 @@ router.delete('/:event_id', auth, async (req, res) => {
 router.put('/sure/:id', auth, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
+    const user = await User.findById(req.user.id).select('-password');
 
     if (
       event.sure.filter(sure => sure.user.toString() === req.user.id).length > 0
@@ -126,7 +127,11 @@ router.put('/sure/:id', auth, async (req, res) => {
         .json({ msg: 'You have been alredy sign up to this event' });
     }
 
-    event.sure.unshift({ user: req.user.id });
+    event.sure.unshift({
+      user: req.user.id,
+      name: user.name,
+      avatar: user.avatar
+    });
 
     await event.save();
 
@@ -143,6 +148,7 @@ router.put('/sure/:id', auth, async (req, res) => {
 router.put('/unsure/:id', auth, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
+    const user = await User.findById(req.user.id).select('-password');
 
     if (
       event.unsure.filter(unsure => unsure.user.toString() === req.user.id)
@@ -153,7 +159,11 @@ router.put('/unsure/:id', auth, async (req, res) => {
         .json({ msg: 'You have been alredy sign up to this event' });
     }
 
-    event.unsure.unshift({ user: req.user.id });
+    event.unsure.unshift({
+      user: req.user.id,
+      name: user.name,
+      avatar: user.avatar
+    });
 
     await event.save();
 

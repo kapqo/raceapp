@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { setAlert } from './alert';
 import {
   ADD_CHAT,
   GET_CHATS,
@@ -51,7 +50,7 @@ export const getMyChats = () => async dispatch => {
   }
 };
 
-// Get post
+// Get chat
 export const getChat = id => async dispatch => {
   try {
     const res = await axios.get(`/api/chats/${id}`);

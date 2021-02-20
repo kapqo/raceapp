@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { storage } from '../../firebase/firebase';
 import { createProfile, getCurrentProfile } from '../../actions/profile';
 import { Progress } from 'semantic-ui-react';
-import { Button, Icon, Header, Form, Grid } from 'semantic-ui-react';
+import { Button, Icon, Header, Form, Grid, Input } from 'semantic-ui-react';
 
 const EditProfile = ({
   profile: { profile, loading },
@@ -57,7 +57,8 @@ const EditProfile = ({
       year: loading || !profile.vehicle ? '' : profile.vehicle.year,
       description:
         loading || !profile.vehicle ? '' : profile.vehicle.description,
-      photo: loading || !profile.vehicle ? '' : profile.vehicle.photo
+      photo: loading || !profile.vehicle ? '' : profile.vehicle.photo,
+      avatar: loading || !profile.user.avatar ? '' : profile.user.avatar
     });
   }, [loading, getCurrentProfile]);
 
@@ -244,8 +245,16 @@ const EditProfile = ({
             </div>
           </Fragment>
         )}
+        {progress === 0 || progress === 100 ? (
+          <input type='submit' className='ui green button ' value='Save' />
+        ) : (
+          <input
+            type='submit'
+            className='ui green button disabled'
+            value='Save'
+          />
+        )}
 
-        <input type='submit' className='ui green button' value='Upload' />
         <Link className='ui yellow button' to='/dashboard'>
           Go Back
         </Link>

@@ -6,8 +6,9 @@ import { addVehicle } from '../../actions/profile';
 import { storage } from '../../firebase/firebase';
 import { Button, Progress, Form, Icon, Header, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { addNotification } from '../../actions/notification';
 
-const AddVehicle = ({ addVehicle, history }) => {
+const AddVehicle = ({ addVehicle, history, addNotification }) => {
   const [formData, setFormData] = useState({
     brand: '',
     model: '',
@@ -75,6 +76,9 @@ const AddVehicle = ({ addVehicle, history }) => {
         onSubmit={e => {
           e.preventDefault();
           addVehicle(formData, history);
+          addNotification({
+            text: `added a vehicle to his/her profile, check`
+          });
         }}
       >
         <Form.Field required>
@@ -197,7 +201,10 @@ const AddVehicle = ({ addVehicle, history }) => {
 };
 
 AddVehicle.propTypes = {
-  addVehicle: PropTypes.func.isRequired
+  addVehicle: PropTypes.func.isRequired,
+  addNotification: PropTypes.func.isRequired
 };
 
-export default connect(null, { addVehicle })(withRouter(AddVehicle));
+export default connect(null, { addVehicle, addNotification })(
+  withRouter(AddVehicle)
+);

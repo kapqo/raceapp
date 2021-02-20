@@ -1,10 +1,20 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import { connect } from 'react-redux';
 import { getGroup, editGroup } from '../../actions/group';
-import { Button, Form, Radio, Label, Icon } from 'semantic-ui-react';
+import { storage } from '../../firebase/firebase';
+import {
+  Button,
+  Form,
+  Radio,
+  Label,
+  Icon,
+  Header,
+  Grid,
+  Progress
+} from 'semantic-ui-react';
 
 const EditGroup = ({
   group: { group, loading },
@@ -41,18 +51,53 @@ const EditGroup = ({
     if (group !== null) setData();
   }, [group]);
 
-  console.log(group);
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState('');
+  const [progress, setProgress] = useState(0);
 
   const { name, avatar, description, status } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const handlePhoto = e => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = e => {
+    e.preventDefault();
+    const uploadTask = storage.ref(`groupAvatars/${image.name}`).put(image);
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progress);
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref('groupAvatars')
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            setUrl(url);
+            setFormData({ ...formData, avatar: url });
+          });
+      }
+    );
+  };
+
   return group === null || loading ? (
     <Spinner />
   ) : (
     <Fragment>
-      <h1 class='large textcustom'>Edit a Group</h1>
+      <Header as='h1'>Edit a Group</Header>
       <Form
         onSubmit={e => {
           e.preventDefault();
@@ -95,7 +140,42 @@ const EditGroup = ({
             <Icon circular name='key' color='blue'></Icon>Private
           </Label>
         </Form.Field>
-        <Button type='submit'>Submit</Button>
+        <Form.Field>
+          <label>
+            Group's avatar<small>(optional)</small>
+          </label>
+          <Grid columns='equal'>
+            <Grid.Row>
+              <Grid.Column>
+                <input
+                  type='file'
+                  accept='.png, .jpg, .jpeg'
+                  onChange={handlePhoto}
+                />
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Button type='submit' onClick={handleUpload}>
+                  Upload
+                </Button>
+              </Grid.Column>
+              <Grid.Column stretched>
+                <Progress percent={progress} active autoSuccess></Progress>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Form.Field>
+        {progress === 0 || progress === 100 ? (
+          <Button color='green' type='submit'>
+            Save
+          </Button>
+        ) : (
+          <Button disabled color='green' type='submit'>
+            Save
+          </Button>
+        )}
+        <Link className='ui yellow button' to='/groups'>
+          Go Back
+        </Link>
       </Form>
     </Fragment>
   );

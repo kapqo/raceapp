@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import { connect } from 'react-redux';
@@ -120,7 +120,12 @@ const EditEvent = ({
             onChange={e => onChange(e)}
           ></textarea>
         </Form.Field>
-        <Button type='submit'>Submit</Button>
+        <Button color='green' type='submit'>
+          Save
+        </Button>
+        <Link className='ui yellow button' to='/events'>
+          Go Back
+        </Link>
       </Form>
     </Fragment>
   );

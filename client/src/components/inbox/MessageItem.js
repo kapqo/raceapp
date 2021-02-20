@@ -25,7 +25,7 @@ const MessageItem = ({ message, auth, user1, user2 }) => {
 
           <Comment.Metadata>
             <div>
-              Sended <Moment format='YYYY/MM/DD HH:mm'>{message.date}</Moment>
+              Sended <Moment fromNow>{message.date}</Moment>
             </div>
           </Comment.Metadata>
           <Comment.Text>{message.text}</Comment.Text>

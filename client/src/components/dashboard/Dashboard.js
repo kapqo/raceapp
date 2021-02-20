@@ -5,18 +5,39 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { deleteAccount, getCurrentProfile } from '../../actions/profile';
 import Vehicle from './Vehicle';
+import NotificationItem from './NotificationItem';
 import DashboardActions from './DashboardActions';
-import { Button, Icon, Header, Container, Segment } from 'semantic-ui-react';
+import {
+  Button,
+  Icon,
+  Header,
+  Container,
+  Segment,
+  Feed
+} from 'semantic-ui-react';
+import { getNotifications } from '../../actions/notification';
 
 const Dashboard = ({
   getCurrentProfile,
   auth: { user },
   profile: { profile, loading },
-  deleteAccount
+  deleteAccount,
+  getNotifications,
+  notification: { notifications }
 }) => {
   useEffect(() => {
     getCurrentProfile();
   }, [getCurrentProfile]);
+
+  useEffect(() => {
+    getNotifications();
+  }, [getNotifications]);
+
+  const result = profile
+    ? notifications.filter(notification =>
+        profile.following.find(follow => follow.user === notification.user._id)
+      )
+    : [];
 
   return loading && profile === null ? (
     <Spinner />
@@ -38,6 +59,15 @@ const Dashboard = ({
           ) : (
             <Segment textAlign='center'>No vehicle added</Segment>
           )}
+          <Header>Activity feed</Header>
+          <Feed>
+            {result.map(notification => (
+              <NotificationItem
+                key={notification._id}
+                notification={notification}
+              />
+            ))}
+          </Feed>
 
           <div className='my-2'>
             <Button
@@ -72,15 +102,20 @@ const Dashboard = ({
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   deleteAccount: PropTypes.func.isRequired,
+  getNotifications: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  notification: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile
+  profile: state.profile,
+  notification: state.notification
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
-  Dashboard
-);
+export default connect(mapStateToProps, {
+  getCurrentProfile,
+  deleteAccount,
+  getNotifications
+})(Dashboard);

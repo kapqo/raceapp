@@ -6,7 +6,12 @@ import { logout } from '../../actions/auth';
 import { Image, Label } from 'semantic-ui-react';
 import logo from './logoWhite.png';
 
-const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
+const Navbar = ({
+  auth: { isAuthenticated, loading, user },
+  logout,
+  getNotifications,
+  notifications
+}) => {
   const authLinks = (
     <ul>
       <li>
@@ -49,6 +54,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
 
 Navbar.propTypes = {
   logout: PropTypes.func.isRequired,
+
   auth: PropTypes.object.isRequired
 };
 

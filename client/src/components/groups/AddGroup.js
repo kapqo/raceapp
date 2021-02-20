@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
@@ -39,8 +39,6 @@ const AddGroup = ({
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState('');
   const [progress, setProgress] = useState(0);
-
-  //const setMember = () => setFormData({...formData, id: groupAdmin})
 
   const { name, avatar, description, user, status, admin } = formData;
 
@@ -147,9 +145,18 @@ const AddGroup = ({
             </Grid.Row>
           </Grid>
         </Form.Field>
-        <Button type='submit'>
-          Submit
-        </Button>
+        {progress === 0 || progress === 100 ? (
+          <Button color='green' type='submit'>
+            Create a group
+          </Button>
+        ) : (
+          <Button disabled color='green' type='submit'>
+            Create a group
+          </Button>
+        )}
+        <Link className='ui yellow button' to='/groups'>
+          Go Back
+        </Link>
       </Form>
     </Fragment>
   );

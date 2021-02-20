@@ -88,7 +88,7 @@ router.post(
     if (youtube) profileFields.social.youtube = youtube;
 
     const userFields = {};
-    userFields.avatar = avatar;
+    if (avatar) userFields.avatar = avatar;
 
     try {
       let profile = await Profile.findOne({ user: req.user.id });

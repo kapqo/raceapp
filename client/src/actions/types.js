@@ -47,3 +47,6 @@ export const GET_CHATS = 'GET_CHATS';
 export const GET_CHAT = 'GET_CHAT';
 export const CHAT_ERROR = 'CHAT_ERROR';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
+export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
+export const NOTIFICATION_ERROR = 'NOTIFICATION_ERROR';

@@ -47,7 +47,11 @@ router.post(
       group = new Group(groupFields);
 
       //Add admin to a member
-      group.members.unshift({ user: req.user.id });
+      group.members.unshift({
+        user: req.user.id,
+        name: user.name,
+        avatar: user.avatar
+      });
 
       await group.save();
       res.json(group);
@@ -63,7 +67,7 @@ router.post(
 // Public
 router.get('/', async (req, res) => {
   try {
-    const groups = await Group.find().populate('user', ['name', 'avatar']);
+    const groups = await Group.find();
     res.json(groups);
   } catch (error) {
     console.error(error.message);
@@ -112,6 +116,7 @@ router.delete('/:group_id', auth, async (req, res) => {
 router.put('/members/:id', auth, async (req, res) => {
   try {
     const group = await Group.findById(req.params.id);
+    const user = await User.findById(req.user.id).select('-password');
 
     if (
       group.members.filter(members => members.user.toString() === req.user.id)
@@ -120,7 +125,11 @@ router.put('/members/:id', auth, async (req, res) => {
       return res.status(400).json({ msg: 'You are alredy in this gorup' });
     }
 
-    group.members.unshift({ user: req.user.id });
+    group.members.unshift({
+      user: req.user.id,
+      name: user.name,
+      avatar: user.avatar
+    });
 
     await group.save();
 

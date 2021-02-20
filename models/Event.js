@@ -35,6 +35,12 @@ const EventSchema = new mongoose.Schema({
       user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
+      },
+      name: {
+        type: String
+      },
+      avatar: {
+        type: String
       }
     }
   ],
@@ -43,6 +49,12 @@ const EventSchema = new mongoose.Schema({
       user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
+      },
+      name: {
+        type: String
+      },
+      avatar: {
+        type: String
       }
     }
   ]
