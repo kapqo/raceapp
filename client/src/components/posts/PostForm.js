@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
+import { addNotification } from '../../actions/notification';
 import { storage } from '../../firebase/firebase';
 import { Segment, Image, Form, Button, Grid } from 'semantic-ui-react';
 
-const PostForm = ({ addPost, id, auth }) => {
+const PostForm = ({ addPost, id, auth, addNotification }) => {
   const [text, setText] = useState('');
 
   const [image, setImage] = useState(null);
@@ -52,6 +53,9 @@ const PostForm = ({ addPost, id, auth }) => {
         addPost({ text, type: id, photo: url });
         setText('');
         setUrl('');
+        if (id !== '') {
+          addNotification({ text: `added post in a group`, link: id });
+        }
       }}
     >
       <Segment.Group>
@@ -123,11 +127,12 @@ const PostForm = ({ addPost, id, auth }) => {
 
 PostForm.propTypes = {
   addPost: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  addNotification: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { addPost })(PostForm);
+export default connect(mapStateToProps, { addPost, addNotification })(PostForm);

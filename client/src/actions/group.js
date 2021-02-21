@@ -28,6 +28,24 @@ export const getGroups = () => async dispatch => {
   }
 };
 
+//Get groups
+export const getMyGroups = () => async dispatch => {
+  dispatch({ type: CLEAR_GROUP });
+  try {
+    const res = await axios.get('/api/group/myGroups/my');
+
+    dispatch({
+      type: GET_GROUPS,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: GROUP_ERROR,
+      payload: { msg: error.response.statusText, status: error.response.status }
+    });
+  }
+};
+
 // Get group
 export const getGroup = id => async dispatch => {
   try {

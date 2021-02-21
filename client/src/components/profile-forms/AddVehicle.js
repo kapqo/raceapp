@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,8 +7,22 @@ import { storage } from '../../firebase/firebase';
 import { Button, Progress, Form, Icon, Header, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { addNotification } from '../../actions/notification';
+import { getGroups } from '../../actions/group';
+import { addMember } from '../../actions/group';
 
-const AddVehicle = ({ addVehicle, history, addNotification }) => {
+const AddVehicle = ({
+  addVehicle,
+  history,
+  addNotification,
+  getGroups,
+  addMember,
+  auth,
+  group: { groups, loading }
+}) => {
+  useEffect(() => {
+    getGroups();
+  }, [getGroups]);
+
   const [formData, setFormData] = useState({
     brand: '',
     model: '',
@@ -25,6 +39,8 @@ const AddVehicle = ({ addVehicle, history, addNotification }) => {
   const [progress, setProgress] = useState(0);
 
   const { brand, model, engine, hp, fuel, year, description, photo } = formData;
+
+  let groupBrand = groups.find(group => group.name === brand);
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,8 +93,10 @@ const AddVehicle = ({ addVehicle, history, addNotification }) => {
           e.preventDefault();
           addVehicle(formData, history);
           addNotification({
-            text: `added a vehicle to his/her profile, check`
+            text: `added a vehicle to his/her profile, check`,
+            link: `http://localhost:3000/profile/${auth.user._id}`
           });
+          addMember(groupBrand._id);
         }}
       >
         <Form.Field required>
@@ -202,9 +220,21 @@ const AddVehicle = ({ addVehicle, history, addNotification }) => {
 
 AddVehicle.propTypes = {
   addVehicle: PropTypes.func.isRequired,
-  addNotification: PropTypes.func.isRequired
+  addNotification: PropTypes.func.isRequired,
+  getGroups: PropTypes.func.isRequired,
+  group: PropTypes.object.isRequired,
+  addMember: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
-export default connect(null, { addVehicle, addNotification })(
-  withRouter(AddVehicle)
-);
+const mapStateToProps = state => ({
+  group: state.group,
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, {
+  addVehicle,
+  addNotification,
+  getGroups,
+  addMember
+})(withRouter(AddVehicle));

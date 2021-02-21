@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,18 +7,35 @@ import GroupItem from './GroupItem';
 import { getGroups } from '../../actions/group';
 import {
   Card,
-  Container,
+  Input,
   Header,
   Icon,
   Label,
   Grid,
   Button
 } from 'semantic-ui-react';
+import Pages from './Pages';
 
 const Group = ({ getGroups, group: { groups, loading } }) => {
   useEffect(() => {
     getGroups();
   }, [getGroups]);
+
+  const [name, setName] = useState('');
+  const [inp, setInp] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(9);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = groups.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
+  let groupz = groups
+    .filter(group => group.name.toLowerCase().includes(inp.toLowerCase()))
+    .slice(indexOfFirstPost, indexOfLastPost);
 
   return (
     <Fragment>
@@ -32,6 +49,18 @@ const Group = ({ getGroups, group: { groups, loading } }) => {
           </Header>
           <Header as='h3' textAlign='center'>
             Connect your interests with other people! Join to our Groups!
+            <p>
+              <Input
+                icon='users'
+                iconPosition='left'
+                placeholder='Search users...'
+                onChange={e => {
+                  let input = e.target.value;
+                  setName(input);
+                  setInp(input);
+                }}
+              />
+            </p>
           </Header>
           <Grid columns='equal'>
             <Grid.Row></Grid.Row>
@@ -55,7 +84,7 @@ const Group = ({ getGroups, group: { groups, loading } }) => {
             ) : (
               <Fragment>
                 {groups.length > 0 ? (
-                  groups.map(group => (
+                  groupz.map(group => (
                     <GroupItem key={group._id} group={group} />
                   ))
                 ) : (
@@ -66,6 +95,11 @@ const Group = ({ getGroups, group: { groups, loading } }) => {
           </Card.Group>
         </Fragment>
       )}
+      <Pages
+        postsPerPage={postsPerPage}
+        totalPosts={groups.length}
+        paginate={paginate}
+      />
     </Fragment>
   );
 };

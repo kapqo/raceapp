@@ -4,9 +4,14 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { Feed, Header } from 'semantic-ui-react';
 
-const NotificationItem = ({ notification: { user, text, date, link } }) => {
+const NotificationItem = ({
+  notification: { user, text, date, link },
+  groups
+}) => {
   let datenow = Date.now();
   let duration = datenow - Date.parse(date);
+
+  const selectedGr = groups?.find(group => group._id === link);
 
   return (
     <Fragment>
@@ -22,12 +27,13 @@ const NotificationItem = ({ notification: { user, text, date, link } }) => {
               <Feed.User>
                 <Link to={`/profile/${user._id}`}>{user.name}</Link>
               </Feed.User>{' '}
-              {text}{' '}
-              {link ? (
-                <a href={link}>here</a>
+              {text}
+              {link === selectedGr?._id ? (
+                <a> {selectedGr?.name}</a>
               ) : (
-                <Link to={`/profile/${user._id}`}>here</Link>
+                <Fragment>{link && <a href={link}> here</a>}</Fragment>
               )}
+              {!link && <Link to={`/profile/${user._id}`}> here</Link>}
               <Feed.Date>
                 <Moment fromNow>{date}</Moment>
               </Feed.Date>

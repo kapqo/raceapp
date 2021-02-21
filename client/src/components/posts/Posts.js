@@ -40,6 +40,8 @@ const Posts = ({
       )
     : [];
 
+  const totalPosts = profile ? posts.filter(post => post.type === '') : [];
+
   return loading || profile === null ? (
     <Spinner />
   ) : (
@@ -59,7 +61,7 @@ const Posts = ({
       </Comment.Group>
       <Pages
         postsPerPage={postsPerPage}
-        totalPosts={posts.length}
+        totalPosts={totalPosts.length}
         paginate={paginate}
       />
     </Fragment>

@@ -83,7 +83,7 @@ const ProfileTop = ({
           </div>
         )}
         {userAdmin && (
-          <div className='my-1'>
+          <div>
             {banned ? (
               <Button positive onClick={e => unbanUser(profileId)}>
                 Unban User

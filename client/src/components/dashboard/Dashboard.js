@@ -16,6 +16,7 @@ import {
   Feed
 } from 'semantic-ui-react';
 import { getNotifications } from '../../actions/notification';
+import { getMyGroups } from '../../actions/group';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -23,6 +24,8 @@ const Dashboard = ({
   profile: { profile, loading },
   deleteAccount,
   getNotifications,
+  getMyGroups,
+  group: { groups },
   notification: { notifications }
 }) => {
   useEffect(() => {
@@ -33,9 +36,23 @@ const Dashboard = ({
     getNotifications();
   }, [getNotifications]);
 
+  useEffect(() => {
+    getMyGroups();
+  }, [getMyGroups]);
+
   const result = profile
     ? notifications.filter(notification =>
-        profile.following.find(follow => follow.user === notification.user._id)
+        profile.following.find(
+          follow =>
+            follow.user === notification.user._id &&
+            notification.text !== `added post in a group`
+        )
+      )
+    : [];
+
+  const resultGr = profile
+    ? notifications.filter(notification =>
+        groups.find(group => group._id === notification.link)
       )
     : [];
 
@@ -65,6 +82,13 @@ const Dashboard = ({
               <NotificationItem
                 key={notification._id}
                 notification={notification}
+              />
+            ))}
+            {resultGr.map(notification => (
+              <NotificationItem
+                key={notification._id}
+                notification={notification}
+                groups={groups}
               />
             ))}
           </Feed>
@@ -105,17 +129,21 @@ Dashboard.propTypes = {
   getNotifications: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  notification: PropTypes.object.isRequired
+  notification: PropTypes.object.isRequired,
+  getMyGroups: PropTypes.func.isRequired,
+  group: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   profile: state.profile,
-  notification: state.notification
+  notification: state.notification,
+  group: state.group
 });
 
 export default connect(mapStateToProps, {
   getCurrentProfile,
   deleteAccount,
-  getNotifications
+  getNotifications,
+  getMyGroups
 })(Dashboard);

@@ -67,7 +67,7 @@ router.post(
 // Public
 router.get('/', async (req, res) => {
   try {
-    const groups = await Group.find();
+    const groups = await Group.find().sort({ date: -1 });
     res.json(groups);
   } catch (error) {
     console.error(error.message);
@@ -212,5 +212,21 @@ router.put(
     }
   }
 );
+
+// GET api/group
+// Get all groups
+// Public
+router.get('/myGroups/my', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+
+    const groups = await Group.find({ 'members.user': user });
+
+    res.json(groups);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
