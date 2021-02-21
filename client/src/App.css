@@ -651,3 +651,14 @@ button {
   font-size: x-small;
   font-weight: bolder;
 }
+
+.aboutus {
+  background-color: black;
+  max-width: 100%;
+  margin: 00px;
+  overflow: hidden;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  top: 0px
+}

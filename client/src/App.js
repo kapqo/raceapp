@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
 import Ad from './components/layout/Ad';
 import Landing from './components/layout/Landing';
+import AboutUs from './components/layout/AboutUs';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
@@ -50,98 +51,99 @@ const App = () => {
         <Fragment>
           <Navbar />
           <Sidebar />
-          <Route exact path='/' component={Landing} />
-          {localStorage.length > 0 && (
+
+          <Switch>
+            <Route exact path='/' component={Landing} />
+            <Route exact path='/' component={AboutUs}></Route>
             <section className='container'>
               <Alert />
-              <Switch>
-                <Route exact path='/register' component={Register}></Route>
-                <Route exact path='/login' component={Login}></Route>
-                <Route exact path='/profiles' component={Profiles}></Route>
-                <Route exact path='/profile/:id' component={Profile}></Route>
-                <PrivateRoute
-                  exact
-                  path='/dashboard'
-                  component={Dashboard}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/create-profile'
-                  component={CreateProfile}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/edit-profile'
-                  component={EditProfile}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/add-vehicle'
-                  component={AddVehicle}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/edit-vehicle/:id'
-                  component={EditVehicle}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/posts'
-                  component={Posts}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/posts/:id'
-                  component={Post}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/groups'
-                  component={Groups}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/add-group'
-                  component={AddGroup}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/edit-group/:id'
-                  component={EditGroup}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/events'
-                  component={Events}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/events/:id'
-                  component={Event}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/add-event'
-                  component={AddEvent}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/edit-event/:id'
-                  component={EditEvent}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/inbox'
-                  component={Inbox}
-                ></PrivateRoute>
-                <PrivateRoute
-                  exact
-                  path='/chatconv/:id'
-                  component={ChatConv}
-                ></PrivateRoute>
-              </Switch>
+              <Route exact path='/register' component={Register}></Route>
+              <Route exact path='/login' component={Login}></Route>
+              <Route exact path='/profiles' component={Profiles}></Route>
+              <Route exact path='/profile/:id' component={Profile}></Route>
+
+              <PrivateRoute
+                exact
+                path='/dashboard'
+                component={Dashboard}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/create-profile'
+                component={CreateProfile}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/edit-profile'
+                component={EditProfile}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/add-vehicle'
+                component={AddVehicle}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/edit-vehicle/:id'
+                component={EditVehicle}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/posts'
+                component={Posts}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/posts/:id'
+                component={Post}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/groups'
+                component={Groups}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/add-group'
+                component={AddGroup}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/edit-group/:id'
+                component={EditGroup}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/events'
+                component={Events}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/events/:id'
+                component={Event}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/add-event'
+                component={AddEvent}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/edit-event/:id'
+                component={EditEvent}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/inbox'
+                component={Inbox}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path='/chatconv/:id'
+                component={ChatConv}
+              ></PrivateRoute>
             </section>
-          )}
+          </Switch>
 
           <PrivateRoute exact component={Ad}></PrivateRoute>
         </Fragment>
