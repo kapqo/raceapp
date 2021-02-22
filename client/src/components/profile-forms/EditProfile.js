@@ -130,7 +130,12 @@ const EditProfile = ({
       <Header as='h3' textAlign='center'>
         Let's get some information to make your profile stand out
       </Header>
-      <Form className='form' onSubmit={e => onSubmit(e)}>
+      <Form
+        onSubmit={e => {
+          e.preventDefault();
+          onSubmit(e);
+        }}
+      >
         <Form.Field required>
           <label>Location</label>
           <input
@@ -198,53 +203,54 @@ const EditProfile = ({
             </Grid.Row>
           </Grid>
         </Form.Field>
+        <Form.Field>
+          <div className='my-2'>
+            <Button
+              color='facebook'
+              onClick={() => toggleSocialInputs(!displaySocialInputs)}
+            >
+              Add Social Network Links
+            </Button>
+            <small className='form-text'>Optional</small>
+          </div>
 
-        <div className='my-2'>
-          <Button
-            color='facebook'
-            onClick={() => toggleSocialInputs(!displaySocialInputs)}
-          >
-            Add Social Network Links
-          </Button>
-          <small className='form-text'>Optional</small>
-        </div>
+          {displaySocialInputs && (
+            <Fragment>
+              <div className='form-group social-input'>
+                <i className='fab fa-instagram fa-2x'></i>
+                <input
+                  type='text'
+                  placeholder='Instagram URL'
+                  name='instagram'
+                  value={instagram}
+                  onChange={e => onChange(e)}
+                />
+              </div>
 
-        {displaySocialInputs && (
-          <Fragment>
-            <div className='form-group social-input'>
-              <i className='fab fa-instagram fa-2x'></i>
-              <input
-                type='text'
-                placeholder='Instagram URL'
-                name='instagram'
-                value={instagram}
-                onChange={e => onChange(e)}
-              />
-            </div>
+              <div className='form-group social-input'>
+                <i className='fab fa-facebook fa-2x'></i>
+                <input
+                  type='text'
+                  placeholder='Facebook URL'
+                  name='facebook'
+                  value={facebook}
+                  onChange={e => onChange(e)}
+                />
+              </div>
 
-            <div className='form-group social-input'>
-              <i className='fab fa-facebook fa-2x'></i>
-              <input
-                type='text'
-                placeholder='Facebook URL'
-                name='facebook'
-                value={facebook}
-                onChange={e => onChange(e)}
-              />
-            </div>
-
-            <div className='form-group social-input'>
-              <i className='fab fa-youtube fa-2x'></i>
-              <input
-                type='text'
-                placeholder='YouTube URL'
-                name='youtube'
-                value={youtube}
-                onChange={e => onChange(e)}
-              />
-            </div>
-          </Fragment>
-        )}
+              <div className='form-group social-input'>
+                <i className='fab fa-youtube fa-2x'></i>
+                <input
+                  type='text'
+                  placeholder='YouTube URL'
+                  name='youtube'
+                  value={youtube}
+                  onChange={e => onChange(e)}
+                />
+              </div>
+            </Fragment>
+          )}
+        </Form.Field>
         {progress === 0 || progress === 100 ? (
           <input type='submit' className='ui green button ' value='Save' />
         ) : (

@@ -27,18 +27,25 @@ const Posts = ({
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = posts
+    .filter(
+      post =>
+        (post.type === '' &&
+          profile.following.find(follow => follow.user === post.user)) ||
+        (post.user === user._id && post.type === '')
+    )
+    .slice(indexOfFirstPost, indexOfLastPost);
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
-  const result = profile
-    ? currentPosts.filter(
-        post =>
-          (post.type === '' &&
-            profile.following.find(follow => follow.user === post.user)) ||
-          (post.user === user._id && post.type === '')
-      )
-    : [];
+  // const result = profile
+  //   ? currentPosts.filter(
+  //       post =>
+  //         (post.type === '' &&
+  //           profile.following.find(follow => follow.user === post.user)) ||
+  //         (post.user === user._id && post.type === '')
+  //     )
+  //   : [];
 
   const totalPosts = profile ? posts.filter(post => post.type === '') : [];
 
@@ -53,7 +60,7 @@ const Posts = ({
 
       <PostForm id={''} />
       <Comment.Group size='massive'>
-        {result.map(post => (
+        {currentPosts.map(post => (
           //<Segment size='huge' raised>
           <PostItem key={post._id} post={post} />
           //</Segment>

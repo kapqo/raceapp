@@ -95,16 +95,18 @@ const ProfileTop = ({
             )}
           </div>
         )}
-        <Button
-          animated='vertical'
-          color='yellow'
-          onClick={e => addChat({ user2 })}
-        >
-          <Button.Content visible>Create chat with user</Button.Content>
-          <Button.Content hidden>
-            <Icon name='send' />
-          </Button.Content>
-        </Button>
+        <Link to='/inbox'>
+          <Button
+            animated='vertical'
+            color='yellow'
+            onClick={e => addChat({ user2 })}
+          >
+            <Button.Content visible>Create chat with user</Button.Content>
+            <Button.Content hidden>
+              <Icon name='send' />
+            </Button.Content>
+          </Button>
+        </Link>
         {following.length > 0 && (
           <Button.Group color='grey'>
             <Button>

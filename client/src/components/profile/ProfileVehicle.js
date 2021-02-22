@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
   Button,
   Icon,
-  Image,
   Modal,
   Grid,
   Header,
@@ -14,6 +13,7 @@ import {
 import PostItem from '../posts/PostItem';
 import PostForm from '../posts/PostForm';
 import { getPosts } from '../../actions/post';
+import Image from 'react-image-enlarger';
 
 const ProfileVehicle = ({
   vehicle: { _id, brand, model, engine, hp, fuel, year, description, photo },
@@ -25,6 +25,8 @@ const ProfileVehicle = ({
   useEffect(() => {
     getPosts();
   }, [getPosts]);
+
+  const [zoomed, setZoomed] = React.useState(false);
 
   //Show only posts of this vehicle
   const result = posts.filter(post => post.type === _id);
@@ -44,7 +46,13 @@ const ProfileVehicle = ({
         </p>
       </div>
       <div className='photo-veh'>
-        <img src={photo} alt=''></img>
+        <Image
+          style={{ width: 'auto', height: 'auto' }}
+          zoomed={zoomed}
+          src={photo}
+          onClick={() => setZoomed(true)}
+          onRequestClose={() => setZoomed(false)}
+        ></Image>
       </div>
       <div>
         <p>
