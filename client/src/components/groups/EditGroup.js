@@ -55,7 +55,7 @@ const EditGroup = ({
   const [url, setUrl] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const { name, avatar, description, status } = formData;
+  const { name, description, status } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { getMyChats } from '../../actions/chat';
-import { Segment, Header, Icon, Button, Grid } from 'semantic-ui-react';
+import { Header, Icon, Grid } from 'semantic-ui-react';
 import ChatItem from './ChatItem';
 
 const Inbox = ({ getMyChats, chat: { chats, loading }, auth: { user } }) => {

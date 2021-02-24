@@ -37,10 +37,10 @@ const AddGroup = ({
   });
 
   const [image, setImage] = useState(null);
-  const [url, setUrl] = useState('');
+  const [setUrl] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const { name, avatar, description, user, status, admin } = formData;
+  const { name, avatar, description, status } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

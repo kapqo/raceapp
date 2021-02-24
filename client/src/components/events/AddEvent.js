@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ const AddEvent = ({ auth: { user }, addEvent, history, addNotification }) => {
     description: ''
   });
 
-  const { title, location, date, time, organizer, description } = formData;
+  const { title, location, date, time, description } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

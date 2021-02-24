@@ -1,9 +1,7 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
-import Moment from 'react-moment';
 import { getChat, sendMessage } from '../../actions/chat';
 import { Comment, Form, Header, Button } from 'semantic-ui-react';
 import MessageItem from './MessageItem';

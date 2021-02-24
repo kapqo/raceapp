@@ -1,10 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Spinner from '../layout/Spinner';
 import Moment from 'react-moment';
-import { Comment, Form, Header, Button, Divider } from 'semantic-ui-react';
+import { Comment, Divider } from 'semantic-ui-react';
 
 const MessageItem = ({ message, auth, user1, user2 }) => {
   return (

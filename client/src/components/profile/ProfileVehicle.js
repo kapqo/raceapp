@@ -99,7 +99,9 @@ const ProfileVehicle = ({
                         <Segment>
                           <Header as='h2'>Description: </Header>
                           <p>{description}</p>
-                          {profileId === authId ? <PostForm id={_id} /> : null}
+                          {profileId === authId ? (
+                            <PostForm id={_id} Buttontxt={'Add update'} />
+                          ) : null}
                           <Comment.Group size='massive'>
                             {result.map(post => (
                               <PostItem key={post._id} post={post} />

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import { Feed, Header } from 'semantic-ui-react';
+import { Feed } from 'semantic-ui-react';
 
 const NotificationItem = ({
   notification: { user, text, date, link },
@@ -19,7 +19,7 @@ const NotificationItem = ({
         <Feed.Event>
           <Feed.Label>
             <Link to={`/profile/${user._id}`}>
-              <img src={user.avatar} />
+              <img src={user.avatar} alt='users avatar' />
             </Link>
           </Feed.Label>
           <Feed.Content>

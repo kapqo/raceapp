@@ -6,7 +6,7 @@ import { addNotification } from '../../actions/notification';
 import { storage } from '../../firebase/firebase';
 import { Segment, Image, Form, Button, Grid } from 'semantic-ui-react';
 
-const PostForm = ({ addPost, id, auth, addNotification }) => {
+const PostForm = ({ addPost, id, auth, addNotification, Buttontxt }) => {
   const [text, setText] = useState('');
 
   const [image, setImage] = useState(null);
@@ -103,7 +103,7 @@ const PostForm = ({ addPost, id, auth, addNotification }) => {
                 {' '}
                 {progress === 0 || progress === 100 ? (
                   <Button type='submit' value='Post' primary floated='right'>
-                    Post
+                    {Buttontxt ? Buttontxt : 'Add post'}
                   </Button>
                 ) : (
                   <Button

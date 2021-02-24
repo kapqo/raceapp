@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Spinner from '../layout/Spinner';
 import { connect } from 'react-redux';
 import { Button, Form, Header } from 'semantic-ui-react';
 import { getEvent, editEvent } from '../../actions/event';
@@ -40,16 +39,7 @@ const EditEvent = ({
     });
   }, [loading, getEvent, match.params.id]);
 
-  const {
-    title,
-    location,
-    description,
-    date,
-    time,
-    name,
-    avatar,
-    organizer
-  } = formData;
+  const { title, location, description, date, time } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

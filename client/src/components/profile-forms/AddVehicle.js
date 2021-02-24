@@ -38,7 +38,7 @@ const AddVehicle = ({
   const [url, setUrl] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const { brand, model, engine, hp, fuel, year, description, photo } = formData;
+  const { brand, model, engine, hp, fuel, year, description } = formData;
 
   let groupBrand = groups.find(group => group.name === brand);
 
