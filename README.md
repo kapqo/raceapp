@@ -1,1 +1,1 @@
-RaceApp is social media networ for users with automotive interests. It was coded in MERN.
+RaceApp is social media network for users with automotive interests. It was coded in MERN.
